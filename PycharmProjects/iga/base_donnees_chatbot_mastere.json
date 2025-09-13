@@ -1,0 +1,731 @@
+{
+  "metadata": {
+    "titre": "Base de données pour chatbot - Règlement Académique Mastère UB",
+    "source": "Règlement Académique du Cycle de Mastère - Université du Burundi",
+    "date_creation": "2024-12-10",
+    "version": "1.0",
+    "description": "Base de données structurée pour entraîner un chatbot sur le règlement académique du mastère de l'Université du Burundi"
+  },
+  "donnees": [ 
+   {
+      "id": 1,
+      "categorie": "définitions",
+      "question": "Qu'est-ce qu'une attestation de réussite ?",
+      "reponse": "Une attestation de réussite est un document qui, sans conférer de grade académique, témoigne de la réussite au contrôle des aptitudes et des connaissances organisé à l'issue d'une filière de formation.",
+      "mots_cles": ["attestation", "réussite", "grade académique", "contrôle", "aptitudes", "connaissances", "filière"],
+      "article_reference": "Section 1, Chapitre I - Définitions",
+      "niveau_importance": "moyen"
+    },
+    {
+      "id": 2,
+      "categorie": "définitions",
+      "question": "Qu'est-ce qu'un baccalauréat ?",
+      "reponse": "Le baccalauréat est un grade académique sanctionnant les études de 1er cycle de 3 ans (6 semestres à raison d'au moins 30 crédits, soit un total de 180 crédits). Il existe 2 types de Baccalauréat : le Baccalauréat de recherche et le Baccalauréat professionnel.",
+      "mots_cles": ["baccalauréat", "grade académique", "1er cycle", "3 ans", "6 semestres", "30 crédits", "180 crédits", "recherche", "professionnel"],
+      "article_reference": "Section 1, Chapitre I - Définitions",
+      "niveau_importance": "élevé"
+    },
+    {
+      "id": 3,
+      "categorie": "définitions",
+      "question": "Qu'est-ce qu'un crédit universitaire ?",
+      "reponse": "Un crédit est une unité correspondant au temps consacré par l'étudiant, au sein d'un programme d'études, à une activité d'apprentissage. Un crédit correspond à 25 heures au moins et à 30 heures au plus d'activités académiques (CM, TP, TR, TD, Stages encadrés). Chaque semestre validé est compté pour 30 crédits.",
+      "mots_cles": ["crédit", "25 heures", "30 heures", "activités académiques", "CM", "TP", "TR", "TD", "stages", "30 crédits", "semestre"],
+      "article_reference": "Section 1, Chapitre I - Définitions",
+      "niveau_importance": "élevé"
+    },
+    {
+      "id": 4,
+      "categorie": "définitions",
+      "question": "Quels sont les différents cycles d'études ?",
+      "reponse": "Il existe 3 cycles d'études : 1er cycle (Baccalauréat : 3 ans), 2ème cycle (Mastère : 2 ans), 3ème cycle (Doctorat : 3 ans).",
+      "mots_cles": ["cycles", "baccalauréat", "3 ans", "mastère", "2 ans", "doctorat"],
+      "article_reference": "Section 1, Chapitre I - Définitions",
+      "niveau_importance": "élevé"
+    },
+    {
+      "id": 5,
+      "categorie": "définitions",
+      "question": "Qu'est-ce qu'un concours d'admission ?",
+      "reponse": "Le concours d'admission est un examen sélectif organisé par chaque filière à l'endroit des candidats au mastère.",
+      "mots_cles": ["concours", "admission", "examen sélectif", "filière", "candidats", "mastère"],
+      "article_reference": "Section 1, Chapitre I - Définitions",
+      "niveau_importance": "élevé"
+    },
+    {
+      "id": 6,
+      "categorie": "définitions",
+      "question": "Qu'est-ce qu'un mastère ?",
+      "reponse": "Le mastère est un grade académique sanctionnant les études du 2ème cycle valorisable pour au moins 120 crédits, après la réussite d'une formation initiale d'au moins 180 crédits (Baccalauréat).",
+      "mots_cles": ["mastère", "grade académique", "2ème cycle", "120 crédits", "formation initiale", "180 crédits", "baccalauréat"],
+      "article_reference": "Section 1, Chapitre I - Définitions",
+      "niveau_importance": "élevé"
+    },
+    {
+      "id": 7,
+      "categorie": "définitions",
+      "question": "Quelle est la différence entre mastère de recherche et mastère professionnel ?",
+      "reponse": "Le mastère de recherche est un diplôme couronnant un parcours préparant à l'exercice d'activités de recherche et organisé en tout ou partie au sein d'une école doctorale. Le mastère professionnel est un diplôme couronnant un parcours préparant à l'exercice de responsabilités professionnelles dans les établissements publics, parapublics ou privés ou à titre libéral.",
+      "mots_cles": ["mastère de recherche", "activités de recherche", "école doctorale", "mastère professionnel", "responsabilités professionnelles", "établissements publics", "privés"],
+      "article_reference": "Section 1, Chapitre I - Définitions",
+      "niveau_importance": "élevé"
+    },
+    {
+      "id": 8,
+      "categorie": "définitions",
+      "question": "Qu'est-ce qu'un mastère complémentaire ?",
+      "reponse": "Le mastère complémentaire est un grade académique sanctionnant des études universitaires de 2ème cycle correspondant à une qualification professionnelle particulière à l'issue d'une formation de 60 crédits au moins, obtenus après une formation initiale d'au moins 300 crédits sanctionnée par un grade de Mastère.",
+      "mots_cles": ["mastère complémentaire", "qualification professionnelle", "60 crédits", "formation initiale", "300 crédits"],
+      "article_reference": "Section 1, Chapitre I - Définitions",
+      "niveau_importance": "moyen"
+    },
+    {
+      "id": 9,
+      "categorie": "définitions",
+      "question": "Qu'est-ce que le plagiat ?",
+      "reponse": "Le plagiat est la reproduction partielle ou totale du contenu d'un travail d'autrui sans citer la source ou l'auteur.",
+      "mots_cles": ["plagiat", "reproduction", "travail d'autrui", "source", "auteur", "citation"],
+      "article_reference": "Section 1, Chapitre I - Définitions",
+      "niveau_importance": "élevé"
+    },
+    {
+      "id": 10,
+      "categorie": "catégories_étudiants",
+      "question": "Qu'est-ce qu'un étudiant régulier ?",
+      "reponse": "Est étudiant régulier tout candidat qui prend inscription générale pour tous les cours d'un programme d'enseignement et qui subit les évaluations dans tous ces cours en vue de l'obtention d'un grade académique.",
+      "mots_cles": ["étudiant régulier", "inscription générale", "tous les cours", "programme", "évaluations", "grade académique"],
+      "article_reference": "Article 3, Chapitre I",
+      "niveau_importance": "élevé"
+    },
+    {
+      "id": 11,
+      "categorie": "catégories_étudiants",
+      "question": "Qu'est-ce qu'un étudiant à temps partiel ?",
+      "reponse": "Est étudiant à temps partiel, tout candidat qui prend une inscription pour certaines unités d'enseignement d'un programme et qui subit les évaluations dans toutes ces unités pour obtenir des crédits. L'autorisation dépend des places disponibles après l'inscription des étudiants réguliers.",
+      "mots_cles": ["étudiant à temps partiel", "certaines unités", "enseignement", "évaluations", "crédits", "places disponibles"],
+      "article_reference": "Article 4, Chapitre I",
+      "niveau_importance": "moyen"
+    },
+    {
+      "id": 12,
+      "categorie": "catégories_étudiants",
+      "question": "Qu'est-ce qu'un auditeur libre ?",
+      "reponse": "Est auditeur libre, tout candidat qui s'inscrit à des cours isolés sans obligation de subir les évaluations dans ces cours. L'autorisation dépend des places disponibles après l'inscription des étudiants réguliers et à temps partiel. La qualité d'auditeur libre ne donne droit à aucun grade académique.",
+      "mots_cles": ["auditeur libre", "cours isolés", "sans évaluations", "places disponibles", "aucun grade académique"],
+      "article_reference": "Article 5, Chapitre I",
+      "niveau_importance": "faible"
+    },
+    {
+      "id": 13,
+      "categorie": "admission",
+      "question": "Quelles sont les conditions d'admission au concours de mastère ?",
+      "reponse": "Sont inscrits au concours d'admission en première année de mastère les candidats détenteurs d'un diplôme de baccalauréat, de licence ou d'ingénieur délivré en République du Burundi ou d'un diplôme jugé équivalent par l'autorité habilitée.",
+      "mots_cles": ["admission", "concours", "première année", "mastère", "baccalauréat", "licence", "ingénieur", "Burundi", "équivalent"],
+      "article_reference": "Article 7, Chapitre II",
+      "niveau_importance": "élevé"
+    },
+    {
+      "id": 14,
+      "categorie": "admission",
+      "question": "Les étudiants étrangers peuvent-ils être admis au mastère ?",
+      "reponse": "Oui, dans les limites des places disponibles, des candidats étrangers détenteurs d'un diplôme ou certificat reconnu équivalent peuvent être admis selon des conditions déterminées par le Ministre ayant l'Enseignement Supérieur dans ses attributions.",
+      "mots_cles": ["étudiants étrangers", "places disponibles", "diplôme équivalent", "certificat", "Ministre", "Enseignement Supérieur"],
+      "article_reference": "Article 8, Chapitre II",
+      "niveau_importance": "moyen"
+    },
+    {
+      "id": 15,
+      "categorie": "admission",
+      "question": "Comment se fait l'admission en mastère deux ?",
+      "reponse": "L'admission d'un étudiant en mastère deux est subordonnée à la réussite du mastère un ou par les crédits validés antérieurement après l'analyse du dossier par le Conseil Scientifique. Un étudiant à temps partiel peut demander l'admission pour un semestre.",
+      "mots_cles": ["mastère deux", "réussite", "mastère un", "crédits validés", "Conseil Scientifique", "temps partiel", "semestre"],
+      "article_reference": "Article 9, Chapitre II",
+      "niveau_importance": "élevé"
+    },
+    {
+      "id": 16,
+      "categorie": "conseil_scientifique",
+      "question": "Qu'est-ce que le Conseil Scientifique ?",
+      "reponse": "Au sein de chaque Faculté ou Institut, un Conseil Scientifique par filière est créé. Il reste fonctionnel jusqu'à la fin des deux années de master et comprend tous les enseignants intervenant dans la filière. Il est dirigé par un bureau composé d'un président, un vice-président et un secrétaire.",
+      "mots_cles": ["Conseil Scientifique", "filière", "deux années", "enseignants", "président", "vice-président", "secrétaire"],
+      "article_reference": "Article 10, Chapitre II",
+      "niveau_importance": "élevé"
+    },
+    {
+      "id": 17,
+      "categorie": "conseil_scientifique",
+      "question": "Quelles sont les missions du Conseil Scientifique ?",
+      "reponse": "Le Conseil Scientifique est chargé d'analyser les dossiers d'admission, évaluer les crédits acquis dans d'autres établissements, donner un avis sur l'acceptation ou le refus du candidat, organiser un concours d'admission, gérer et évaluer les programmes, et constituer le jury d'examens.",
+      "mots_cles": ["analyser dossiers", "évaluer crédits", "acceptation", "refus", "concours", "gérer programmes", "jury examens"],
+      "article_reference": "Article 11, Chapitre II",
+      "niveau_importance": "élevé"
+    },
+    {
+      "id": 18,
+      "categorie": "admission",
+      "question": "Qui doit passer le concours d'admission ?",
+      "reponse": "Toutes les catégories d'étudiants (réguliers, à temps partiel, auditeurs libres) doivent passer un concours d'admission organisé par chaque filière au début de chaque année académique. Tout candidat au mastère doit avoir obtenu le diplôme d'État à l'issue de l'enseignement secondaire.",
+      "mots_cles": ["concours admission", "toutes catégories", "filière", "année académique", "diplôme d'État", "enseignement secondaire"],
+      "article_reference": "Article 12, Chapitre II",
+      "niveau_importance": "élevé"
+    },
+    {
+      "id": 19,
+      "categorie": "inscription",
+      "question": "Qui supervise les inscriptions ?",
+      "reponse": "Sous l'autorité du Recteur, le Directeur des Services Académiques supervise l'enregistrement des inscriptions et veille au respect des dates d'ouverture et de clôture des inscriptions.",
+      "mots_cles": ["Recteur", "Directeur Services Académiques", "inscriptions", "dates ouverture", "clôture"],
+      "article_reference": "Article 14, Chapitre II",
+      "niveau_importance": "moyen"
+    },
+    {
+      "id": 20,
+      "categorie": "inscription",
+      "question": "Quels documents sont requis pour la demande d'inscription au concours ?",
+      "reponse": "Le dossier comprend : une lettre de demande, les copies certifiées du diplôme d'État ou équivalent, les copies certifiées des diplômes de Baccalauréat/licence ou équivalent, et les bulletins des trois dernières années d'études universitaires.",
+      "mots_cles": ["lettre demande", "copies certifiées", "diplôme d'État", "baccalauréat", "licence", "bulletins", "trois années"],
+      "article_reference": "Article 15, Chapitre II",
+      "niveau_importance": "élevé"
+    }, 
+   {
+      "id": 21,
+      "categorie": "inscription",
+      "question": "Dans quel délai les résultats du concours sont-ils publiés ?",
+      "reponse": "Le Conseil Scientifique est tenu de publier les résultats dans les cinq jours ouvrables qui suivent la passation du concours avec copie au Recteur. Le Recteur publie dans les trois jours ouvrables la liste des candidats retenus.",
+      "mots_cles": ["résultats concours", "cinq jours ouvrables", "Conseil Scientifique", "trois jours", "Recteur", "candidats retenus"],
+      "article_reference": "Article 16, Chapitre II",
+      "niveau_importance": "moyen"
+    },
+    {
+      "id": 22,
+      "categorie": "inscription",
+      "question": "Quels documents sont requis pour l'inscription définitive après réussite au concours ?",
+      "reponse": "Le dossier comprend : copies certifiées du diplôme d'État et des diplômes universitaires, bulletins des trois dernières années, formulaires d'inscription, extrait d'acte de naissance, attestation d'identité, extrait casier judiciaire, attestation de bonne conduite, certificat d'aptitude physique, CV, trois photos passeport, reçu de paiement des frais.",
+      "mots_cles": ["inscription définitive", "copies certifiées", "bulletins", "formulaires", "acte naissance", "identité", "casier judiciaire", "aptitude physique", "CV", "photos", "frais"],
+      "article_reference": "Article 17, Chapitre II",
+      "niveau_importance": "élevé"
+    },
+    {
+      "id": 23,
+      "categorie": "inscription",
+      "question": "Comment traiter les demandes d'inscription tardive ?",
+      "reponse": "Les demandes d'inscription tardive sont adressées par écrit au Directeur des Services Académiques, avec copie au Doyen et au Président du Conseil Scientifique. En cas de refus, un recours peut être adressé au Recteur. Aucune demande ne peut être reçue un mois après le début des cours.",
+      "mots_cles": ["inscription tardive", "Directeur Services Académiques", "Doyen", "Conseil Scientifique", "recours", "Recteur", "un mois"],
+      "article_reference": "Article 18, Chapitre II",
+      "niveau_importance": "moyen"
+    },
+    {
+      "id": 24,
+      "categorie": "inscription",
+      "question": "Comment obtient-on la qualité d'étudiant ?",
+      "reponse": "La qualité d'étudiant s'obtient par la prise d'une inscription définitive au rôle et se matérialise par la délivrance d'une carte d'étudiant et l'assistance obligatoire aux cours, travaux pratiques, dirigés, de terrain et stages. L'inscription est personnelle et valable pour un semestre.",
+      "mots_cles": ["qualité étudiant", "inscription définitive", "carte étudiant", "assistance obligatoire", "cours", "travaux", "stages", "semestre"],
+      "article_reference": "Article 19, Chapitre II",
+      "niveau_importance": "élevé"
+    },
+    {
+      "id": 25,
+      "categorie": "inscription",
+      "question": "Quand peut-on annuler une inscription ?",
+      "reponse": "Passé le premier mois après le début des cours, aucune demande d'annulation ne peut être acceptée sauf en cas d'inaptitude physique temporaire ou autre motif valable. L'annulation endéans un mois permet que le semestre ne soit pas pris en compte dans le curriculum. Après un mois, le semestre sera comptabilisé comme un échec.",
+      "mots_cles": ["annulation inscription", "premier mois", "inaptitude physique", "motif valable", "curriculum", "échec"],
+      "article_reference": "Article 20, Chapitre II",
+      "niveau_importance": "moyen"
+    },
+    {
+      "id": 26,
+      "categorie": "frais",
+      "question": "Que se passe-t-il avec les frais en cas d'annulation ?",
+      "reponse": "En cas d'annulation volontaire de l'inscription, les frais d'inscription et de scolarité ne sont pas restitués.",
+      "mots_cles": ["annulation volontaire", "frais inscription", "scolarité", "non restitués"],
+      "article_reference": "Article 21, Chapitre II",
+      "niveau_importance": "moyen"
+    },
+    {
+      "id": 27,
+      "categorie": "frais",
+      "question": "Comment sont fixés les frais d'inscription et de scolarité ?",
+      "reponse": "Les frais d'inscription et de scolarité ainsi que leurs modalités de paiement sont fixés par le Conseil d'administration de l'Université du Burundi après avis du Conseil Rectoral et rendus publics par voie d'affichage avant l'ouverture des inscriptions au concours d'entrée.",
+      "mots_cles": ["frais inscription", "scolarité", "Conseil administration", "Conseil Rectoral", "affichage", "concours entrée"],
+      "article_reference": "Article 22, Chapitre II",
+      "niveau_importance": "moyen"
+    },
+    {
+      "id": 28,
+      "categorie": "réintégration",
+      "question": "Comment faire une demande de réintégration ?",
+      "reponse": "La demande de réintégration est adressée au Directeur des Services Académiques au moins un mois avant le début de l'année académique ou du semestre de réintégration conformément à l'ordonnance ministérielle portant fixation du calendrier académique avec copie au Doyen concerné.",
+      "mots_cles": ["réintégration", "Directeur Services Académiques", "un mois avant", "année académique", "semestre", "ordonnance ministérielle", "Doyen"],
+      "article_reference": "Article 23, Chapitre II",
+      "niveau_importance": "moyen"
+    },
+    {
+      "id": 29,
+      "categorie": "organisation_enseignements",
+      "question": "Comment sont organisés les semestres ?",
+      "reponse": "Pour chaque année académique, les enseignements sont organisés en 2 semestres de 14 à 19 semaines chacun. À la fin du premier semestre, un congé de 15 jours calendrier est accordé aux étudiants. À la fin des 2 semestres, 30 jours calendriers sont consacrés aux évaluations de la 2ème session.",
+      "mots_cles": ["2 semestres", "14 à 19 semaines", "congé", "15 jours", "30 jours", "2ème session"],
+      "article_reference": "Article 24, Chapitre III",
+      "niveau_importance": "élevé"
+    },
+    {
+      "id": 30,
+      "categorie": "organisation_enseignements",
+      "question": "Combien de crédits comprend le cycle de mastère ?",
+      "reponse": "Le cycle de mastère comprend 120 crédits répartis sur deux années académiques, soit quatre semestres, y compris le mémoire. L'année académique compte au total 60 crédits à raison de 30 crédits par semestre.",
+      "mots_cles": ["120 crédits", "deux années", "quatre semestres", "mémoire", "60 crédits", "30 crédits par semestre"],
+      "article_reference": "Article 25, Chapitre III",
+      "niveau_importance": "élevé"
+    },
+    {
+      "id": 31,
+      "categorie": "organisation_enseignements",
+      "question": "Quelle est la durée du cursus académique pour un étudiant régulier ?",
+      "reponse": "La durée du cursus académique pour un étudiant régulier est de 2 ans. Un dépassement de cette durée entraîne automatiquement la suspension temporaire du mastère concerné l'année académique suivante.",
+      "mots_cles": ["cursus académique", "2 ans", "étudiant régulier", "dépassement", "suspension temporaire"],
+      "article_reference": "Article 31, Chapitre III",
+      "niveau_importance": "élevé"
+    },
+    {
+      "id": 32,
+      "categorie": "organisation_enseignements",
+      "question": "Qu'est-ce qu'un conseiller pédagogique ?",
+      "reponse": "Chaque classe est dotée d'un conseiller pédagogique dont le rôle est l'écoute et la guidance pédagogiques tout au long de l'année académique. Le conseiller pédagogique est nommé par le doyen sur proposition du Conseil Scientifique.",
+      "mots_cles": ["conseiller pédagogique", "écoute", "guidance", "année académique", "doyen", "Conseil Scientifique"],
+      "article_reference": "Article 28, Chapitre III",
+      "niveau_importance": "moyen"
+    },
+    {
+      "id": 33,
+      "categorie": "stages",
+      "question": "Qu'est-ce qu'un stage dans le cadre du mastère ?",
+      "reponse": "Le stage est un apprentissage ou une démonstration de l'aptitude à appliquer les connaissances acquises dans le cadre d'un enseignement théorique ou pratique. Il peut être organisé parallèlement aux enseignements ou séparément. Les stages prévus dans un semestre doivent obligatoirement être effectués au cours du même semestre.",
+      "mots_cles": ["stage", "apprentissage", "aptitude", "connaissances", "enseignement théorique", "pratique", "même semestre"],
+      "article_reference": "Article 38, Chapitre III",
+      "niveau_importance": "moyen"
+    },
+    {
+      "id": 34,
+      "categorie": "évaluations",
+      "question": "Quelles sont les conditions d'admission aux évaluations ?",
+      "reponse": "L'autorisation de se présenter aux évaluations est subordonnée à l'inscription au rôle, à la présence régulière aux cours magistraux, travaux pratiques, dirigés, de recherche, de terrain, séminaires et stages. Un ECUE est considéré comme non suivi si l'étudiant totalise un nombre d'absences injustifiées égal au tiers du volume horaire présentiel.",
+      "mots_cles": ["admission évaluations", "inscription au rôle", "présence régulière", "ECUE", "absences injustifiées", "tiers volume horaire"],
+      "article_reference": "Article 41, Chapitre III",
+      "niveau_importance": "élevé"
+    },
+    {
+      "id": 35,
+      "categorie": "évaluations",
+      "question": "Que se passe si un étudiant ne fait pas un travail requis ?",
+      "reponse": "L'enseignant n'accorde pas de note à tout travail non fait. L'unité d'enseignement y relative n'est pas validée. Dans ce cas, l'étudiant est mis en situation de redoublement. Cette unité d'enseignement ne sera validée qu'après avoir fait les travaux concernés l'année suivante.",
+      "mots_cles": ["travail non fait", "pas de note", "unité non validée", "redoublement", "année suivante"],
+      "article_reference": "Article 43, Chapitre III",
+      "niveau_importance": "élevé"
+    },
+    {
+      "id": 36,
+      "categorie": "évaluations",
+      "question": "Comment justifier une absence à une évaluation ?",
+      "reponse": "Toute absence à une évaluation doit être justifiée par écrit par l'étudiant auprès du Président du Conseil Scientifique avec copie au Doyen et à l'enseignant concerné. En cas de motif légitime approuvé par le Conseil Scientifique, l'étudiant a droit à une évaluation de rattrapage.",
+      "mots_cles": ["absence évaluation", "justifiée par écrit", "Président Conseil Scientifique", "Doyen", "motif légitime", "rattrapage"],
+      "article_reference": "Article 44, Chapitre III",
+      "niveau_importance": "moyen"
+    },
+    {
+      "id": 37,
+      "categorie": "évaluations",
+      "question": "Comment se déroulent les évaluations continues ?",
+      "reponse": "Il doit être organisé des évaluations continues (interrogations, devoirs, autres travaux donnés aux étudiants) et leurs notes sont comptabilisées dans les résultats du semestre. Les évaluations portent sur les cours magistraux et les travaux effectués par les étudiants.",
+      "mots_cles": ["évaluations continues", "interrogations", "devoirs", "travaux", "notes comptabilisées", "cours magistraux"],
+      "article_reference": "Article 53, Chapitre III",
+      "niveau_importance": "moyen"
+    },
+    {
+      "id": 38,
+      "categorie": "évaluations",
+      "question": "Que se passe avec les travaux pratiques en deuxième session ?",
+      "reponse": "Les travaux pratiques, travaux dirigés et travaux de terrain ne sont pas repris en deuxième session. Les évaluations de la 2ème session sont organisées après la proclamation des résultats de la première session. Trente jours calendriers sont réservés aux évaluations de la 2ème session.",
+      "mots_cles": ["travaux pratiques", "travaux dirigés", "terrain", "pas repris", "2ème session", "30 jours"],
+      "article_reference": "Article 54, Chapitre III",
+      "niveau_importance": "moyen"
+    },
+    {
+      "id": 39,
+      "categorie": "évaluations",
+      "question": "Comment sont notées les évaluations ?",
+      "reponse": "Les étudiants passent les évaluations par écrit et/ou oralement. Les évaluations sont notées sur un maximum de 20. Le nombre de crédits pour chaque type d'évaluation est déterminé dans l'offre de formation.",
+      "mots_cles": ["évaluations", "écrit", "oral", "maximum 20", "crédits", "offre formation"],
+      "article_reference": "Article 55, Chapitre III",
+      "niveau_importance": "élevé"
+    },
+    {
+      "id": 40,
+      "categorie": "évaluations",
+      "question": "Comment consulter ses copies d'examen ?",
+      "reponse": "Les étudiants qui le souhaitent peuvent consulter leurs copies auprès du secrétaire du jury après l'affichage des résultats suivant un horaire fixé par ce dernier. Les copies sont conservées pendant deux ans.",
+      "mots_cles": ["consulter copies", "secrétaire jury", "affichage résultats", "horaire", "conservées", "deux ans"],
+      "article_reference": "Article 57, Chapitre III",
+      "niveau_importance": "moyen"
+    },   
+ {
+      "id": 41,
+      "categorie": "recours",
+      "question": "Comment introduire un recours concernant les résultats ?",
+      "reponse": "Les recours concernant les résultats sont introduits par lettre adressée au président du jury dans les deux jours ouvrables suivant l'affichage des résultats. Une copie est adressée au doyen et au Directeur des Services Académiques. Les recours sont examinés et tranchés par le jury dans une période n'excédant pas 5 jours ouvrables.",
+      "mots_cles": ["recours", "résultats", "président jury", "deux jours ouvrables", "affichage", "doyen", "5 jours"],
+      "article_reference": "Article 57, Chapitre III",
+      "niveau_importance": "moyen"
+    },
+    {
+      "id": 42,
+      "categorie": "jurys",
+      "question": "Comment sont constitués les jurys d'examens ?",
+      "reponse": "Sur proposition du Doyen, le Conseil de Faculté/Institut constitue les jurys pour chaque année académique. Il nomme les présidents, secrétaires et leurs suppléants et les transmet au Recteur pour nomination. Les jurys sont composés de membres du personnel enseignant qui participent effectivement à la formation des étudiants.",
+      "mots_cles": ["jurys examens", "Doyen", "Conseil Faculté", "présidents", "secrétaires", "Recteur", "personnel enseignant"],
+      "article_reference": "Articles 59-60, Chapitre III",
+      "niveau_importance": "moyen"
+    },
+    {
+      "id": 43,
+      "categorie": "jurys",
+      "question": "Quelles sont les fonctions des jurys d'examens ?",
+      "reponse": "Les jurys d'examens ont pour fonction de : veiller à la bonne marche des évaluations, au secret des délibérations et à la publication des résultats ; délibérer sur l'ensemble des résultats de chaque candidat et statuer sur la mention à attribuer ainsi que la validation des crédits ; statuer sur les éventuels recours.",
+      "mots_cles": ["fonctions jurys", "bonne marche", "secret délibérations", "publication résultats", "mention", "validation crédits", "recours"],
+      "article_reference": "Article 61, Chapitre III",
+      "niveau_importance": "élevé"
+    },
+    {
+      "id": 44,
+      "categorie": "délibération",
+      "question": "Qu'est-ce que la délibération ?",
+      "reponse": "La délibération consiste en une appréciation collégiale par le jury de l'ensemble des résultats obtenus par chaque étudiant. À la fin du premier semestre, les jurys délibèrent et valident les crédits réussis. Après le second semestre, ils prennent des décisions finales sur la base des UE validées.",
+      "mots_cles": ["délibération", "appréciation collégiale", "jury", "résultats", "premier semestre", "crédits", "UE validées"],
+      "article_reference": "Article 62, Chapitre IV",
+      "niveau_importance": "élevé"
+    },
+    {
+      "id": 45,
+      "categorie": "délibération",
+      "question": "Comment le jury est-il convoqué pour la délibération ?",
+      "reponse": "Le Président du jury convoque les membres au moins 48 heures avant la séance par invitation personnelle et affichage. La lettre précise la date, l'heure, le lieu. Une copie est adressée au Directeur des Services Académiques et au Doyen. Le jury ne peut siéger valablement que s'il réunit 2/3 des enseignants à temps plein.",
+      "mots_cles": ["convocation jury", "48 heures", "invitation personnelle", "affichage", "date heure lieu", "2/3 enseignants"],
+      "article_reference": "Articles 63-65, Chapitre IV",
+      "niveau_importance": "moyen"
+    },
+    {
+      "id": 46,
+      "categorie": "délibération",
+      "question": "Comment se déroule le vote du jury ?",
+      "reponse": "Le jury statue à la majorité absolue des membres présents. Tout membre a droit à une voix. L'abstention et les procurations ne sont pas autorisées. En cas de parité des voix, la proposition favorable au candidat est adoptée. Les votes du jury sont secrets.",
+      "mots_cles": ["vote jury", "majorité absolue", "une voix", "pas abstention", "pas procurations", "parité", "favorable candidat", "votes secrets"],
+      "article_reference": "Article 67, Chapitre IV",
+      "niveau_importance": "élevé"
+    },
+    {
+      "id": 47,
+      "categorie": "validation_ue",
+      "question": "Comment une unité d'enseignement est-elle validée ?",
+      "reponse": "À l'exception du mémoire, une UE est réussie quand la moyenne pondérée des notes dans les ECUE qui la composent est égale à au moins 10/20, sans qu'aucune note d'un ECUE ne soit inférieure à 7/20. Un ECUE avec une note inférieure à 7/20 en 1ère session est repris en 2ème session.",
+      "mots_cles": ["validation UE", "moyenne pondérée", "10/20", "ECUE", "7/20", "2ème session"],
+      "article_reference": "Article 70, Chapitre IV",
+      "niveau_importance": "élevé"
+    },
+    {
+      "id": 48,
+      "categorie": "amélioration_notes",
+      "question": "Un étudiant peut-il améliorer ses notes en deuxième session ?",
+      "reponse": "L'étudiant ayant réussi en première session avec une moyenne d'au moins 67,5% peut demander par écrit au président du Conseil Scientifique de passer la deuxième session pour améliorer les cours où il a obtenu une note inférieure à 14/20. C'est la meilleure note qui sera considérée.",
+      "mots_cles": ["amélioration notes", "67,5%", "demande écrite", "Conseil Scientifique", "14/20", "meilleure note"],
+      "article_reference": "Article 71, Chapitre IV",
+      "niveau_importance": "moyen"
+    },
+    {
+      "id": 49,
+      "categorie": "conditions_réussite",
+      "question": "Quelles sont les conditions pour réussir et avancer de classe ?",
+      "reponse": "À l'issue de la 2ème session, les étudiants réussissent aux conditions cumulatives suivantes : avoir obtenu une note globale de 50% pour toutes les UE de l'année, avoir obtenu au moins 10/20 dans chaque UE et n'avoir obtenu aucune note inférieure à 7/20 dans un ECUE.",
+      "mots_cles": ["conditions réussite", "2ème session", "50%", "toutes UE", "10/20", "7/20", "ECUE"],
+      "article_reference": "Article 72, Chapitre IV",
+      "niveau_importance": "élevé"
+    },
+    {
+      "id": 50,
+      "categorie": "ue_non_validées",
+      "question": "Que se passe si un étudiant a des UE non validées ?",
+      "reponse": "Les étudiants n'ayant pas plus de 2 UE non validées peuvent être inscrits dans l'année suivante quitte à faire valider ces UE avant la fin du cycle d'études. L'ensemble des ECUE concernés ne doit pas dépasser 10 crédits. Dans le cas contraire, l'étudiant reprend l'année.",
+      "mots_cles": ["UE non validées", "2 UE", "année suivante", "fin cycle", "10 crédits", "reprend année"],
+      "article_reference": "Article 72, Chapitre IV",
+      "niveau_importance": "élevé"
+    },
+    {
+      "id": 51,
+      "categorie": "échec",
+      "question": "Que se passe en cas d'échec ?",
+      "reponse": "Un étudiant qui obtient une note globale inférieure à 50% en 2ème session est en situation d'échec. S'il a obtenu une note supérieure ou égale à 45%, il peut reprendre l'année ou changer de filière après concours. Le redoublement et le changement de filière ne sont autorisés qu'une seule fois.",
+      "mots_cles": ["échec", "50%", "2ème session", "45%", "reprendre année", "changer filière", "une seule fois"],
+      "article_reference": "Article 73, Chapitre IV",
+      "niveau_importance": "élevé"
+    },
+    {
+      "id": 52,
+      "categorie": "exclusion",
+      "question": "Quand un étudiant est-il exclu définitivement ?",
+      "reponse": "À l'issue de la deuxième session, l'étudiant ayant obtenu une note globale inférieure à 45% est exclu définitivement du mastère concerné.",
+      "mots_cles": ["exclusion définitive", "deuxième session", "45%", "mastère concerné"],
+      "article_reference": "Article 74, Chapitre IV",
+      "niveau_importance": "élevé"
+    },
+    {
+      "id": 53,
+      "categorie": "redoublement",
+      "question": "Comment se passe le redoublement ?",
+      "reponse": "En cas de redoublement ou de changement de filière, les UE validées ne sont pas reprises. Pour les UE non validées, l'étudiant reprend tous les ECUE dans lesquels il n'a pas obtenu une note supérieure ou égale à 10/20. Le jury analyse la capitalisation des crédits.",
+      "mots_cles": ["redoublement", "changement filière", "UE validées", "pas reprises", "UE non validées", "10/20", "capitalisation crédits"],
+      "article_reference": "Article 75, Chapitre IV",
+      "niveau_importance": "élevé"
+    },
+    {
+      "id": 54,
+      "categorie": "décisions_première_session",
+      "question": "Quelles sont les décisions possibles à l'issue de la première session ?",
+      "reponse": "Les décisions sont : Réussi (R) - pourcentage ≥50% avec toutes UE validées ; Ajourné (A) - UE à valider en 2ème session ; Assimilé aux ajournés (AA) - motif valable ; Ajourné totalement (AT) - aucune UE validée ; Exclu pour fraude (EF) ; Exclu pour sanction (ES).",
+      "mots_cles": ["première session", "Réussi", "50%", "Ajourné", "Assimilé", "motif valable", "Exclu fraude", "Exclu sanction"],
+      "article_reference": "Article 76, Chapitre IV",
+      "niveau_importance": "élevé"
+    },
+    {
+      "id": 55,
+      "categorie": "décisions_deuxième_session",
+      "question": "Quelles sont les décisions possibles à l'issue de la deuxième session ?",
+      "reponse": "Les décisions sont : Réussi (R) - ≥50% avec toutes UE validées ; Admis avec UE à valider (AUE) - ≥50% avec au plus 2 UE non validées ; Non réussi (NR) - <50% ou plus de 2 UE non validées ; Assimilé aux ajournés (AA) ; Exclu (E) - <45% ; Exclu pour l'année suivante (EA) ; Exclu pour fraude (EF) ; Exclu par sanction (ES).",
+      "mots_cles": ["deuxième session", "Réussi", "50%", "AUE", "2 UE", "Non réussi", "Exclu", "45%"],
+      "article_reference": "Article 77, Chapitre IV",
+      "niveau_importance": "élevé"
+    },
+    {
+      "id": 56,
+      "categorie": "mentions",
+      "question": "Quelles sont les mentions attribuées aux étudiants ?",
+      "reponse": "En situation de réussite : La Plus Grande Distinction (≥90% sans note <10/20) ; Grande Distinction (≥80% sans note <10/20) ; Distinction (≥70% sans note <10/20) ; Satisfaction (≥60%) ; Passable (≥50%). En situation d'échec : Insuffisant.",
+      "mots_cles": ["mentions", "Plus Grande Distinction", "90%", "Grande Distinction", "80%", "Distinction", "70%", "Satisfaction", "60%", "Passable", "50%", "Insuffisant"],
+      "article_reference": "Article 79, Chapitre IV",
+      "niveau_importance": "élevé"
+    },
+    {
+      "id": 57,
+      "categorie": "proclamation_résultats",
+      "question": "Comment se fait la proclamation des résultats ?",
+      "reponse": "La proclamation des résultats se fait par le Secrétaire du jury par voie d'affichage. Toute erreur constatée après la proclamation doit être signifiée à l'étudiant concerné endéans 5 jours ouvrables. Au-delà de ce délai, les résultats sont définitivement confirmés.",
+      "mots_cles": ["proclamation résultats", "Secrétaire jury", "affichage", "erreur", "5 jours ouvrables", "définitivement confirmés"],
+      "article_reference": "Article 81, Chapitre IV",
+      "niveau_importance": "moyen"
+    },
+    {
+      "id": 58,
+      "categorie": "mémoire",
+      "question": "Qu'est-ce que le travail de fin d'études ?",
+      "reponse": "Par travail de fin d'études, on entend le projet de fin d'étude appelé 'mémoire'. L'obtention du diplôme de mastère est subordonnée à la rédaction, présentation et défense d'un mémoire original dont les normes de fond et de forme sont déterminées par le Conseil Scientifique.",
+      "mots_cles": ["travail fin études", "mémoire", "diplôme mastère", "rédaction", "présentation", "défense", "original", "Conseil Scientifique"],
+      "article_reference": "Articles 84-85, Chapitre V",
+      "niveau_importance": "élevé"
+    },
+    {
+      "id": 59,
+      "categorie": "mémoire",
+      "question": "Quand doit-on choisir son sujet de mémoire ?",
+      "reponse": "Les étudiants doivent avoir introduit leurs sujets de mémoire, en collaboration avec leurs directeurs, un mois avant la fin du deuxième semestre de la première année de mastère. Les sujets doivent être approuvés par le Conseil Scientifique avant la fin du second semestre de la première année.",
+      "mots_cles": ["sujet mémoire", "un mois avant", "deuxième semestre", "première année", "directeurs", "approuvés", "Conseil Scientifique"],
+      "article_reference": "Articles 86-87, Chapitre V",
+      "niveau_importance": "élevé"
+    },
+    {
+      "id": 60,
+      "categorie": "mémoire",
+      "question": "Qui peut diriger un mémoire de mastère ?",
+      "reponse": "La direction d'un mémoire de mastère est assurée par un professeur qui a le grade de docteur. Elle est assurée par un ou deux professeur(s) à temps plein. À titre exceptionnel, le Conseil Scientifique peut autoriser la direction par une personne étrangère à l'Université en collaboration avec un Codirecteur du corps enseignant à temps plein.",
+      "mots_cles": ["direction mémoire", "professeur", "grade docteur", "temps plein", "personne étrangère", "Codirecteur"],
+      "article_reference": "Articles 88-89, Chapitre V",
+      "niveau_importance": "élevé"
+    },    {
+ 
+     "id": 61,
+      "categorie": "mémoire",
+      "question": "Quelles sont les responsabilités du directeur de mémoire ?",
+      "reponse": "Le directeur de mémoire approuve le calendrier et le plan de travail et veille à ce que l'étudiant le respecte. Il rapporte au Conseil Scientifique l'état d'avancement et les modifications éventuelles du calendrier. Il doit aider l'étudiant à achever le travail dans les délais réglementaires.",
+      "mots_cles": ["directeur mémoire", "calendrier", "plan travail", "Conseil Scientifique", "état avancement", "délais réglementaires"],
+      "article_reference": "Articles 90-91, Chapitre V",
+      "niveau_importance": "moyen"
+    },
+    {
+      "id": 62,
+      "categorie": "mémoire",
+      "question": "Que se passe en cas de désaccord entre l'étudiant et son directeur ?",
+      "reponse": "En cas de désaccord notoire entre l'étudiant et son directeur, l'une des parties dresse et transmet sans délais un rapport motivé au Conseil Scientifique qui décide de la suite à y réserver.",
+      "mots_cles": ["désaccord", "étudiant", "directeur", "rapport motivé", "Conseil Scientifique", "suite à réserver"],
+      "article_reference": "Article 92, Chapitre V",
+      "niveau_importance": "moyen"
+    },
+    {
+      "id": 63,
+      "categorie": "mémoire",
+      "question": "Quelles sont les conditions pour le mastère de recherche ?",
+      "reponse": "Dans un parcours de formation conduisant au Diplôme de Mastère de Recherche, avant la défense de son travail de fin d'études, le candidat doit avoir soumis au moins un article à la publication dans une revue indexée.",
+      "mots_cles": ["mastère recherche", "défense", "travail fin études", "article", "publication", "revue indexée"],
+      "article_reference": "Article 93, Chapitre V",
+      "niveau_importance": "élevé"
+    },
+    {
+      "id": 64,
+      "categorie": "mémoire",
+      "question": "Comment déposer son mémoire ?",
+      "reponse": "L'étudiant dépose son mémoire en autant d'exemplaires qu'il y a de membres du jury au secrétariat de la Faculté ou de l'institut 20 jours au moins avant la date de la soutenance. La réception est subordonnée à la présentation d'une autorisation de dépôt signée par son directeur.",
+      "mots_cles": ["dépôt mémoire", "exemplaires", "membres jury", "secrétariat", "20 jours", "soutenance", "autorisation", "directeur"],
+      "article_reference": "Article 94, Chapitre V",
+      "niveau_importance": "élevé"
+    },
+    {
+      "id": 65,
+      "categorie": "soutenance",
+      "question": "Quand doit se faire la soutenance du mémoire ?",
+      "reponse": "La soutenance du mémoire doit être faite avant la fin du second semestre de la deuxième année du mastère. La soutenance doit avoir lieu dans les trente jours suivant la date de dépôt.",
+      "mots_cles": ["soutenance mémoire", "second semestre", "deuxième année", "mastère", "30 jours", "date dépôt"],
+      "article_reference": "Articles 95-97, Chapitre V",
+      "niveau_importance": "élevé"
+    },
+    {
+      "id": 66,
+      "categorie": "soutenance",
+      "question": "Comment est composé le jury de soutenance ?",
+      "reponse": "Les jurys de soutenance des mémoires sont désignés par le Conseil Scientifique. Il est composé d'au moins trois membres ou quatre dans le cas où le mémoire est dirigé par un directeur et un co-directeur. Deux membres au moins doivent faire partie du corps enseignant à temps plein. La présidence et le secrétariat ne peuvent être confiés ni au directeur ni au co-directeur.",
+      "mots_cles": ["jury soutenance", "Conseil Scientifique", "trois membres", "quatre", "directeur", "co-directeur", "temps plein", "présidence", "secrétariat"],
+      "article_reference": "Article 96, Chapitre V",
+      "niveau_importance": "élevé"
+    },
+    {
+      "id": 67,
+      "categorie": "soutenance",
+      "question": "Comment se déroule la soutenance publique ?",
+      "reponse": "La soutenance des mémoires se fait en séance publique. Des personnes ne faisant pas partie du jury peuvent poser des questions à l'étudiant sur l'autorisation du Président du jury, à condition que les personnes aient un grade égal ou supérieur à celui auquel prétend le candidat.",
+      "mots_cles": ["soutenance publique", "séance publique", "questions", "autorisation", "Président jury", "grade égal", "supérieur"],
+      "article_reference": "Article 98, Chapitre V",
+      "niveau_importance": "moyen"
+    },
+    {
+      "id": 68,
+      "categorie": "soutenance",
+      "question": "Que se passe si un étudiant ne peut pas défendre son mémoire ?",
+      "reponse": "L'étudiant n'ayant pas pu défendre son mémoire en première session peut le faire avant la fin de la deuxième session. Passé ce délai, l'étudiant est en situation de redoublement. Il peut défendre son mémoire au cours de l'année de redoublement. L'étudiant n'ayant pas pu défendre son mémoire est définitivement exclu de l'Université.",
+      "mots_cles": ["pas défendre", "première session", "deuxième session", "redoublement", "année redoublement", "définitivement exclu"],
+      "article_reference": "Article 99, Chapitre V",
+      "niveau_importance": "élevé"
+    },
+    {
+      "id": 69,
+      "categorie": "soutenance",
+      "question": "Comment est évalué le mémoire après la soutenance ?",
+      "reponse": "Après la soutenance du mémoire, le jury délibère et déclare le mémoire reçu ou ajourné. Le mémoire est jugé recevable si le candidat a obtenu une note d'au moins 12/20. Un délai d'un mois est accordé au candidat pour effectuer les corrections recommandées par le jury.",
+      "mots_cles": ["évaluation mémoire", "jury délibère", "reçu", "ajourné", "12/20", "un mois", "corrections"],
+      "article_reference": "Article 100, Chapitre V",
+      "niveau_importance": "élevé"
+    },
+    {
+      "id": 70,
+      "categorie": "diplômes",
+      "question": "Comment obtient-on le grade de Mastère ?",
+      "reponse": "Le grade de 'Mastère' est décerné au candidat qui a réussi toutes les épreuves du cycle de mastère. La mention attribuée aux étudiants en fin du cycle de mastère est déterminée sur la base de la moyenne des résultats obtenus pendant toute la durée du cycle.",
+      "mots_cles": ["grade Mastère", "réussi", "toutes épreuves", "cycle mastère", "mention", "moyenne résultats", "durée cycle"],
+      "article_reference": "Articles 105-106, Chapitre V",
+      "niveau_importance": "élevé"
+    },
+    {
+      "id": 71,
+      "categorie": "diplômes",
+      "question": "Quelles mentions figurent sur le diplôme ?",
+      "reponse": "Les mentions devant figurer sur le diplôme sont : La Plus Grande Distinction, Grande Distinction, Distinction, Satisfaction, Passable.",
+      "mots_cles": ["mentions diplôme", "Plus Grande Distinction", "Grande Distinction", "Distinction", "Satisfaction", "Passable"],
+      "article_reference": "Article 107, Chapitre V",
+      "niveau_importance": "moyen"
+    },
+    {
+      "id": 72,
+      "categorie": "attestations",
+      "question": "Comment obtenir une attestation de réussite ?",
+      "reponse": "Les attestations de réussite ou tenant lieu de diplôme sont délivrées par le Directeur des Services Académiques sur demande de l'intéressé. Les attestations tenant lieu de diplôme doivent être accompagnées d'une annexe descriptive appelée 'supplément à l'attestation'. Ces attestations ont la validité d'une année.",
+      "mots_cles": ["attestation réussite", "Directeur Services Académiques", "demande", "supplément attestation", "validité", "une année"],
+      "article_reference": "Article 108, Chapitre V",
+      "niveau_importance": "moyen"
+    },
+    {
+      "id": 73,
+      "categorie": "diplômes",
+      "question": "Qui signe le diplôme et que contient-il ?",
+      "reponse": "Le diplôme portera la signature du Président du jury, du Doyen de la Faculté/Institut, du Recteur de l'Université et du porteur. Chaque diplôme est accompagné d'une annexe descriptive appelée 'supplément au diplôme' qui précise les coordonnées civiles et académiques, les connaissances et compétences acquises, et les bulletins de transcription des notes.",
+      "mots_cles": ["signatures diplôme", "Président jury", "Doyen", "Recteur", "porteur", "supplément diplôme", "coordonnées", "compétences", "bulletins"],
+      "article_reference": "Article 109, Chapitre V",
+      "niveau_importance": "moyen"
+    },
+    {
+      "id": 74,
+      "categorie": "discipline",
+      "question": "Quelles sont les obligations des étudiants ?",
+      "reponse": "L'étudiant est tenu de respecter les règlements régissant l'Université du Burundi ainsi que les lois et règlements de la Nation. Il est interdit de : perturber l'ordre et la tranquillité des campus ; s'adonner à des actes de violences ; perturber les activités académiques ; dégrader le patrimoine ; commettre des infractions pénales.",
+      "mots_cles": ["obligations étudiants", "règlements", "lois", "perturber ordre", "violences", "activités académiques", "patrimoine", "infractions pénales"],
+      "article_reference": "Article 111, Chapitre VI",
+      "niveau_importance": "élevé"
+    },
+    {
+      "id": 75,
+      "categorie": "sanctions",
+      "question": "Quelles sont les sanctions académiques possibles ?",
+      "reponse": "Les sanctions académiques sont : le refus de l'inscription à une session d'examens ou l'annulation d'une telle inscription ; l'exclusion de l'Université pendant une ou plusieurs années académiques ; l'exclusion définitive de l'Université. Les sanctions du point 1 sont prises par le Recteur, celles des points 2 et 3 par le Ministre sur proposition du Conseil d'Administration.",
+      "mots_cles": ["sanctions académiques", "refus inscription", "exclusion temporaire", "exclusion définitive", "Recteur", "Ministre", "Conseil Administration"],
+      "article_reference": "Article 112, Chapitre VI",
+      "niveau_importance": "élevé"
+    },
+    {
+      "id": 76,
+      "categorie": "fraude_inscription",
+      "question": "Que se passe en cas de fraude dans le dossier d'inscription ?",
+      "reponse": "Toute fraude constatée dans un dossier d'inscription (fausses déclarations sur l'identité et le parcours scolaire, faux diplômes, faux papiers) est sanctionnée par le refus définitif d'inscription dans toutes les facultés et instituts de l'Université du Burundi. Le Recteur doit saisir les instances judiciaires habilitées.",
+      "mots_cles": ["fraude inscription", "fausses déclarations", "faux diplômes", "refus définitif", "toutes facultés", "instances judiciaires"],
+      "article_reference": "Article 113, Chapitre VI",
+      "niveau_importance": "élevé"
+    },
+    {
+      "id": 77,
+      "categorie": "suspension_cours",
+      "question": "Comment suspendre ses cours ?",
+      "reponse": "Aucun étudiant ne peut suspendre ses cours sans en aviser par écrit le Doyen de la Faculté ou de l'Institut. Le Doyen en informera le Directeur des Services Académiques. En cas de manquement, l'étudiant sera exclu pour l'année en cours et/ou suivante, sauf justifications valables. En cas de récidive, il est définitivement exclu.",
+      "mots_cles": ["suspension cours", "aviser par écrit", "Doyen", "Directeur Services Académiques", "exclu", "justifications valables", "récidive", "définitivement exclu"],
+      "article_reference": "Article 115, Chapitre VI",
+      "niveau_importance": "moyen"
+    },
+    {
+      "id": 78,
+      "categorie": "fraude_examens",
+      "question": "Comment est sanctionnée la fraude aux examens ?",
+      "reponse": "La fraude est sanctionnée par l'exclusion définitive de l'Université pour l'étudiant surpris en flagrant délit. Les complices éventuels du fraudeur subissent la même sanction. Les délits avec indices graves constatés pendant la correction et confirmés par une commission ad hoc sont soumis à la même réglementation.",
+      "mots_cles": ["fraude examens", "exclusion définitive", "flagrant délit", "complices", "indices graves", "commission ad hoc"],
+      "article_reference": "Article 116, Chapitre VI",
+      "niveau_importance": "élevé"
+    },
+    {
+      "id": 79,
+      "categorie": "procédure_fraude",
+      "question": "Quelle est la procédure en cas de fraude constatée ?",
+      "reponse": "L'examinateur ou surveillant ayant constaté le délit doit établir un procès-verbal dans les deux jours ouvrables et l'adresser au Président du Conseil Scientifique avec copie à l'intéressé, au Doyen, au Directeur des Services Académiques et au Recteur. L'intéressé peut présenter ses moyens de défense par écrit dans les deux jours. Le jury confirme ou infirme la fraude.",
+      "mots_cles": ["procédure fraude", "procès-verbal", "deux jours ouvrables", "Président Conseil Scientifique", "moyens défense", "jury confirme"],
+      "article_reference": "Article 117, Chapitre VI",
+      "niveau_importance": "élevé"
+    },
+    {
+      "id": 80,
+      "categorie": "plagiat",
+      "question": "Comment est sanctionné le plagiat ?",
+      "reponse": "Un étudiant coupable de plagiat est sanctionné conformément à l'exclusion définitive. Au cas où le plagiat est constaté après la défense d'un travail ou après la délivrance d'un diplôme ou d'un certificat, les effets légaux de ces actes sont annulés par l'autorité compétente sur proposition du Conseil Scientifique.",
+      "mots_cles": ["plagiat", "exclusion définitive", "après défense", "après délivrance", "diplôme", "certificat", "effets légaux annulés", "autorité compétente"],
+      "article_reference": "Article 118, Chapitre VI",
+      "niveau_importance": "élevé"
+    }
+  ]
+}

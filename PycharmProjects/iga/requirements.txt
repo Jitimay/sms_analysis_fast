@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+pydantic
+pydantic-settings
+python-dotenv
+sentence-transformers
+faiss-cpu
+rank-bm25
+rapidfuzz
+requests

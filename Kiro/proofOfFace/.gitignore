@@ -1,0 +1,183 @@
+# ProofOfFace .gitignore
+
+# ===== RUST/CARGO =====
+target/
+Cargo.lock
+**/*.rs.bk
+*.pdb
+
+# ===== NODE.JS/FRONTEND =====
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+lerna-debug.log*
+build/
+dist/
+*.tsbuildinfo
+.npm
+.eslintcache
+
+# ===== PYTHON/AI SERVICE =====
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+.venv/
+pip-log.txt
+pip-delete-this-directory.txt
+.pytest_cache/
+htmlcov/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+
+# ===== ENVIRONMENT FILES =====
+.env
+.env.*
+!.env.example
+.envrc
+
+# ===== DATABASE =====
+*.db
+*.sqlite
+*.sqlite3
+*.db-journal
+*.db-shm
+*.db-wal
+
+# ===== LOGS =====
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+.pnpm-debug.log*
+
+# ===== IDE/EDITOR =====
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+*.sublime-project
+
+# ===== OS =====
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# ===== SUBSTRATE SPECIFIC =====
+.substrate/
+chains/
+/tmp/
+keystore/
+
+# ===== IPFS =====
+.ipfs/
+ipfs_data/
+
+# ===== DOCKER =====
+.dockerignore
+docker-compose.override.yml
+
+# ===== TEMPORARY FILES =====
+tmp/
+temp/
+*.tmp
+*.temp
+*.swp
+*.swo
+
+# ===== BUILD ARTIFACTS =====
+*.wasm
+*.contract
+*.zip
+*.tar.gz
+*.tgz
+
+# ===== TEST COVERAGE =====
+coverage/
+.nyc_output/
+lcov.info
+*.lcov
+
+# ===== DEPENDENCY DIRECTORIES =====
+vendor/
+bower_components/
+
+# ===== BACKUP FILES =====
+*.bak
+*.backup
+*.orig
+
+# ===== SECURITY =====
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+secrets/
+private/
+
+# ===== AI/ML SPECIFIC =====
+*.pkl
+*.pickle
+*.model
+*.h5
+*.pb
+models/
+datasets/
+uploads/
+face_encodings/
+
+# ===== BLOCKCHAIN SPECIFIC =====
+*.keystore
+*.json.bak
+accounts/
+keys/
+
+# ===== PERFORMANCE =====
+.cache/
+*.pid
+*.seed
+*.pid.lock
+
+# ===== MISC =====
+.sass-cache/
+.connect.lock
+.typings/
+typings/
+.grunt
+.lock-wscript
+lib-cov
+.nyc_output
+.grunt
+.lock-wscript
+build/Release
+.vscode-test
+.yarn-integrity
+.next

@@ -1,162 +1,207 @@
 #!/usr/bin/env python3
 """
-Basic test version of ProofOfFace AI Service
-Tests Flask app startup without face_recognition dependencies
+Basic test for Flask app functionality
 """
 
+import sys
 import os
-import logging
-import time
-from datetime import datetime
-from typing import Dict, Any, Optional
 
-from flask import Flask, request, jsonify, g
-from flask_cors import CORS
+# Add current directory to path
+sys.path.insert(0, '.')
 
-# Mock the face processor and encryption for testing
-class MockFaceProcessor:
-    def __init__(self, tolerance=0.6, model='large', max_image_size=5*1024*1024):
-        self.tolerance = tolerance
-        self.model = model
-        self.max_image_size = max_image_size
+def test_imports():
+    """Test basic imports"""
+    print("📦 Testing Imports")
+    print("-" * 18)
     
-    def process_image(self, image_data):
-        # Mock processing result
-        class MockResult:
-            def __init__(self):
-                self.success = True
-                self.face_encodings = [b'mock_encoding']
-                self.face_locations = [(50, 150, 200, 100)]
-                self.processing_time = 0.5
-                self.image_quality_score = 0.85
-                self.error_message = None
+    try:
+        # Test config import
+        from config import config
+        print("✅ Config imported")
         
-        return MockResult()
-    
-    def generate_biometric_hash(self, face_encoding):
-        return "mock_biometric_hash_" + str(hash(str(face_encoding)))[:16]
+        # Test face processor import
+        from utils.face_processor import create_face_processor
+        print("✅ Face processor imported")
+        
+        # Test encryption import
+        from utils.encryption import create_encryption_manager
+        print("✅ Encryption manager imported")
+        
+        return True
+    except Exception as e:
+        print(f"❌ Import failed: {str(e)}")
+        return False
 
-class MockEncryptionManager:
-    def __init__(self, key=None):
-        self.key = key or "mock_encryption_key"
+def test_services():
+    """Test service creation"""
+    print("\n⚙️  Testing Service Creation")
+    print("-" * 28)
     
-    def encrypt_face_encoding(self, face_encoding):
-        return "mock_encrypted_" + str(hash(str(face_encoding)))[:32]
+    try:
+        from config import config
+        from utils.face_processor import create_face_processor
+        from utils.encryption import create_encryption_manager
+        
+        # Create face processor
+        processor = create_face_processor(
+            tolerance=config.FACE_RECOGNITION_TOLERANCE,
+            model=config.FACE_RECOGNITION_MODEL,
+            max_image_size=config.MAX_IMAGE_SIZE
+        )
+        print(f"✅ Face processor created: {type(processor).__name__}")
+        
+        # Create encryption manager
+        encryption_manager = create_encryption_manager(config.ENCRYPTION_KEY)
+        print("✅ Encryption manager created")
+        
+        # Test basic functionality
+        import numpy as np
+        test_embedding = np.random.randn(128).astype(np.float64)
+        test_embedding = test_embedding / np.linalg.norm(test_embedding) * 2.0
+        
+        is_valid = processor.validate_face_encoding(test_embedding)
+        print(f"✅ Embedding validation: {is_valid}")
+        
+        hash_result = processor.generate_biometric_hash(test_embedding)
+        print(f"✅ Hash generation: {hash_result[:16]}...")
+        
+        return True
+        
+    except Exception as e:
+        print(f"❌ Service creation failed: {str(e)}")
+        import traceback
+        traceback.print_exc()
+        return False
 
-def create_app():
-    """Create Flask app for testing"""
-    app = Flask(__name__)
+def test_flask_app_creation():
+    """Test Flask app creation without running server"""
+    print("\n🌐 Testing Flask App Creation")
+    print("-" * 32)
     
-    # Setup CORS
-    CORS(app, origins='*')
+    try:
+        # Import Flask app creation function
+        from app import create_app
+        
+        # Create app instance
+        flask_app = create_app()
+        print("✅ Flask app created")
+        print(f"✅ App name: {flask_app.name}")
+        
+        # Check if services are attached
+        if hasattr(flask_app, 'face_processor'):
+            processor_type = type(flask_app.face_processor).__name__
+            print(f"✅ Face processor attached: {processor_type}")
+        else:
+            print("❌ Face processor not attached")
+            return False
+        
+        if hasattr(flask_app, 'encryption_manager'):
+            print("✅ Encryption manager attached")
+        else:
+            print("❌ Encryption manager not attached")
+            return False
+        
+        # Test routes are registered
+        routes = [rule.endpoint for rule in flask_app.url_map.iter_rules()]
+        expected_routes = ['health_check', 'extract_embeddings', 'compare_faces']
+        
+        for route in expected_routes:
+            if route in routes:
+                print(f"✅ Route registered: {route}")
+            else:
+                print(f"❌ Route missing: {route}")
+                return False
+        
+        print(f"✅ Total routes: {len(routes)}")
+        
+        return True
+        
+    except Exception as e:
+        print(f"❌ Flask app creation failed: {str(e)}")
+        import traceback
+        traceback.print_exc()
+        return False
+
+def test_app_context():
+    """Test app context functionality"""
+    print("\n🔧 Testing App Context")
+    print("-" * 22)
     
-    # Setup logging
-    logging.basicConfig(level=logging.INFO)
-    app.logger.setLevel(logging.INFO)
+    try:
+        from app import create_app
+        
+        flask_app = create_app()
+        
+        # Test app context
+        with flask_app.app_context():
+            print("✅ App context created")
+            
+            # Test that services are accessible
+            processor = flask_app.face_processor
+            print(f"✅ Processor accessible: {type(processor).__name__}")
+            
+            # Test basic processor functionality in context
+            import numpy as np
+            test_embedding = np.random.randn(128).astype(np.float64)
+            test_embedding = test_embedding / np.linalg.norm(test_embedding) * 2.0
+            
+            is_valid = processor.validate_face_encoding(test_embedding)
+            print(f"✅ Processor working in context: {is_valid}")
+        
+        print("✅ App context closed successfully")
+        return True
+        
+    except Exception as e:
+        print(f"❌ App context test failed: {str(e)}")
+        import traceback
+        traceback.print_exc()
+        return False
+
+def main():
+    """Run basic app tests"""
+    print("🚀 ProofOfFace Flask App Basic Test")
+    print("=" * 40)
     
-    # Initialize mock services
-    app.face_processor = MockFaceProcessor()
-    app.encryption_manager = MockEncryptionManager()
+    tests = [
+        ("Imports", test_imports),
+        ("Services", test_services), 
+        ("Flask App Creation", test_flask_app_creation),
+        ("App Context", test_app_context)
+    ]
     
-    @app.before_request
-    def before_request():
-        g.start_time = time.time()
-        g.request_id = f"{int(time.time())}-{os.getpid()}"
+    results = {}
     
-    @app.after_request
-    def after_request(response):
-        duration = time.time() - g.start_time
-        response.headers['X-Request-ID'] = g.request_id
-        response.headers['X-Response-Time'] = f"{duration:.3f}s"
-        return response
-    
-    @app.route('/health', methods=['GET'])
-    def health_check():
-        """Health check endpoint"""
-        return jsonify({
-            'status': 'healthy',
-            'service': 'proofofface-ai-test',
-            'version': '1.0.0-test',
-            'timestamp': datetime.utcnow().isoformat(),
-            'environment': 'testing',
-            'face_recognition_model': 'mock',
-            'face_recognition_tolerance': 0.6,
-            'note': 'This is a test version without face_recognition dependencies'
-        })
-    
-    @app.route('/process-face', methods=['POST'])
-    def process_face():
-        """Mock face processing endpoint"""
+    for test_name, test_func in tests:
         try:
-            if 'image' not in request.files:
-                return jsonify({
-                    'success': False,
-                    'error': 'No image file provided',
-                    'message': 'Please provide an image file in the "image" field'
-                }), 400
-            
-            image_file = request.files['image']
-            
-            if image_file.filename == '':
-                return jsonify({
-                    'success': False,
-                    'error': 'No image file selected',
-                    'message': 'Please select an image file'
-                }), 400
-            
-            # Read image data
-            image_data = image_file.read()
-            
-            # Mock processing
-            result = app.face_processor.process_image(image_data)
-            face_encoding = result.face_encodings[0]
-            biometric_hash = app.face_processor.generate_biometric_hash(face_encoding)
-            encrypted_encoding = app.encryption_manager.encrypt_face_encoding(face_encoding)
-            
-            return jsonify({
-                'success': True,
-                'biometric_hash': biometric_hash,
-                'encrypted_face_encoding': encrypted_encoding,
-                'quality_score': result.image_quality_score,
-                'processing_time': result.processing_time,
-                'face_location': result.face_locations[0],
-                'note': 'This is a mock response for testing'
-            })
-            
+            results[test_name] = test_func()
         except Exception as e:
-            return jsonify({
-                'success': False,
-                'error': 'Processing failed',
-                'message': str(e)
-            }), 500
+            print(f"❌ {test_name} test crashed: {str(e)}")
+            results[test_name] = False
     
-    @app.route('/config', methods=['GET'])
-    def get_config():
-        """Get configuration"""
-        return jsonify({
-            'face_recognition_model': 'mock',
-            'face_recognition_tolerance': 0.6,
-            'max_image_size': 5242880,
-            'allowed_extensions': ['png', 'jpg', 'jpeg', 'gif', 'bmp'],
-            'rate_limit_per_minute': 60,
-            'environment': 'testing',
-            'note': 'Mock configuration for testing'
-        })
+    # Summary
+    print("\n" + "=" * 40)
+    print("📊 Test Results Summary")
+    print("=" * 40)
     
-    return app
+    passed = 0
+    total = len(results)
+    
+    for test_name, result in results.items():
+        status = "✅ PASS" if result else "❌ FAIL"
+        print(f"{test_name}: {status}")
+        if result:
+            passed += 1
+    
+    print(f"\nOverall: {passed}/{total} tests passed")
+    
+    if passed == total:
+        print("🎉 All basic tests passed!")
+        print("📝 Flask app is ready for startup")
+        return True
+    else:
+        print("⚠️  Some tests failed")
+        return False
 
 if __name__ == '__main__':
-    app = create_app()
-    print("🚀 Starting ProofOfFace AI Service (Test Mode)")
-    print("=" * 50)
-    print("📝 Note: This is a test version without face_recognition dependencies")
-    print("🔧 All endpoints return mock data for testing purposes")
-    print("🌐 Server will be available at: http://localhost:5000")
-    print("=" * 50)
-    
-    app.run(
-        host='0.0.0.0',
-        port=5000,
-        debug=True,
-        threaded=True
-    )
+    success = main()
+    sys.exit(0 if success else 1)

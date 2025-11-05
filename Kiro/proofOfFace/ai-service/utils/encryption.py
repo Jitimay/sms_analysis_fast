@@ -1,19 +1,372 @@
 """
 Encryption utilities for ProofOfFace AI Service
-Handles encryption/decryption of sensitive data like face encodings
+Handles encryption/decryption of sensitive data like face encodings and embeddings
 """
 
 import base64
 import json
 import numpy as np
+import secrets
+import struct
 from cryptography.fernet import Fernet
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
-from typing import Union, Dict, Any, Optional
+from cryptography.hazmat.primitives.ciphers.aead import AESGCM
+from cryptography.hazmat.backends import default_backend
+from typing import Union, Dict, Any, Optional, List
 import logging
 import os
 
 logger = logging.getLogger(__name__)
+
+
+class EmbeddingEncryptor:
+    """
+    Advanced encryption class for face embeddings using AES-256-GCM
+    
+    Features:
+    - AES-256-GCM encryption for authenticated encryption
+    - PBKDF2 key derivation with configurable iterations
+    - Secure salt generation and storage
+    - Base64 encoding for safe transport
+    - Comprehensive error handling
+    """
+    
+    # Security constants
+    SALT_SIZE = 32  # 256 bits
+    NONCE_SIZE = 12  # 96 bits for GCM
+    KEY_SIZE = 32   # 256 bits
+    PBKDF2_ITERATIONS = 100000  # OWASP recommended minimum
+    
+    def __init__(self, iterations: int = PBKDF2_ITERATIONS):
+        """
+        Initialize the embedding encryptor
+        
+        Args:
+            iterations: Number of PBKDF2 iterations (default: 100,000)
+        """
+        self.iterations = iterations
+        logger.info(f"EmbeddingEncryptor initialized with {iterations} PBKDF2 iterations")
+    
+    def generate_key(self) -> str:
+        """
+        Generate a random secure encryption key
+        
+        Returns:
+            str: 64-character hex string (256-bit key)
+        """
+        try:
+            # Generate 256-bit (32-byte) random key
+            key_bytes = secrets.token_bytes(self.KEY_SIZE)
+            key_hex = key_bytes.hex()
+            
+            logger.info("New encryption key generated")
+            return key_hex
+            
+        except Exception as e:
+            logger.error(f"Key generation failed: {str(e)}")
+            raise RuntimeError(f"Failed to generate encryption key: {str(e)}")
+    
+    def _derive_key(self, password: str, salt: bytes) -> bytes:
+        """
+        Derive encryption key from password using PBKDF2
+        
+        Args:
+            password: User password
+            salt: Random salt bytes
+            
+        Returns:
+            bytes: Derived 256-bit key
+        """
+        try:
+            kdf = PBKDF2HMAC(
+                algorithm=hashes.SHA256(),
+                length=self.KEY_SIZE,
+                salt=salt,
+                iterations=self.iterations,
+                backend=default_backend()
+            )
+            
+            derived_key = kdf.derive(password.encode('utf-8'))
+            logger.debug("Key derived successfully from password")
+            return derived_key
+            
+        except Exception as e:
+            logger.error(f"Key derivation failed: {str(e)}")
+            raise ValueError(f"Failed to derive key from password: {str(e)}")
+    
+    def encrypt_embeddings(self, embeddings: List[float], password: str) -> str:
+        """
+        Encrypt face embeddings using AES-256-GCM
+        
+        Args:
+            embeddings: List of 128 float values representing face embeddings
+            password: Password for encryption
+            
+        Returns:
+            str: Base64-encoded encrypted string containing salt, nonce, and ciphertext
+            
+        Raises:
+            ValueError: If embeddings format is invalid
+            RuntimeError: If encryption fails
+        """
+        try:
+            # Validate embeddings
+            if not isinstance(embeddings, list):
+                raise ValueError("Embeddings must be a list")
+            
+            if len(embeddings) != 128:
+                raise ValueError(f"Embeddings must contain exactly 128 values, got {len(embeddings)}")
+            
+            # Validate all values are numbers
+            for i, value in enumerate(embeddings):
+                if not isinstance(value, (int, float)):
+                    raise ValueError(f"All embedding values must be numbers, found {type(value).__name__} at index {i}")
+                if np.isnan(value) or np.isinf(value):
+                    raise ValueError(f"Invalid embedding value (NaN or Inf) at index {i}")
+            
+            # Convert embeddings to bytes
+            # Pack as 128 double-precision floats (8 bytes each)
+            embeddings_bytes = struct.pack('128d', *embeddings)
+            
+            # Generate random salt and nonce
+            salt = secrets.token_bytes(self.SALT_SIZE)
+            nonce = secrets.token_bytes(self.NONCE_SIZE)
+            
+            # Derive key from password
+            key = self._derive_key(password, salt)
+            
+            # Encrypt using AES-256-GCM
+            aesgcm = AESGCM(key)
+            ciphertext = aesgcm.encrypt(nonce, embeddings_bytes, None)
+            
+            # Combine salt + nonce + ciphertext
+            encrypted_data = salt + nonce + ciphertext
+            
+            # Encode as base64 for safe transport
+            encrypted_b64 = base64.b64encode(encrypted_data).decode('utf-8')
+            
+            logger.info("Embeddings encrypted successfully")
+            return encrypted_b64
+            
+        except ValueError as e:
+            logger.error(f"Embedding validation failed: {str(e)}")
+            raise
+        except Exception as e:
+            logger.error(f"Encryption failed: {str(e)}")
+            raise RuntimeError(f"Failed to encrypt embeddings: {str(e)}")
+    
+    def decrypt_embeddings(self, encrypted_str: str, password: str) -> List[float]:
+        """
+        Decrypt face embeddings using AES-256-GCM
+        
+        Args:
+            encrypted_str: Base64-encoded encrypted string
+            password: Password for decryption
+            
+        Returns:
+            List[float]: List of 128 float values representing face embeddings
+            
+        Raises:
+            ValueError: If encrypted string format is invalid or password is wrong
+            RuntimeError: If decryption fails
+        """
+        try:
+            # Validate input
+            if not isinstance(encrypted_str, str):
+                raise ValueError("Encrypted string must be a string")
+            
+            if not encrypted_str:
+                raise ValueError("Encrypted string cannot be empty")
+            
+            # Decode base64
+            try:
+                encrypted_data = base64.b64decode(encrypted_str.encode('utf-8'))
+            except Exception as e:
+                raise ValueError(f"Invalid base64 encoding: {str(e)}")
+            
+            # Validate minimum size (salt + nonce + at least some ciphertext)
+            min_size = self.SALT_SIZE + self.NONCE_SIZE + 16  # 16 bytes for GCM tag
+            if len(encrypted_data) < min_size:
+                raise ValueError(f"Encrypted data too short, expected at least {min_size} bytes")
+            
+            # Extract salt, nonce, and ciphertext
+            salt = encrypted_data[:self.SALT_SIZE]
+            nonce = encrypted_data[self.SALT_SIZE:self.SALT_SIZE + self.NONCE_SIZE]
+            ciphertext = encrypted_data[self.SALT_SIZE + self.NONCE_SIZE:]
+            
+            # Derive key from password
+            key = self._derive_key(password, salt)
+            
+            # Decrypt using AES-256-GCM
+            aesgcm = AESGCM(key)
+            try:
+                embeddings_bytes = aesgcm.decrypt(nonce, ciphertext, None)
+            except Exception as e:
+                # This typically means wrong password or corrupted data
+                raise ValueError("Decryption failed - incorrect password or corrupted data")
+            
+            # Validate decrypted data size
+            expected_size = 128 * 8  # 128 doubles, 8 bytes each
+            if len(embeddings_bytes) != expected_size:
+                raise ValueError(f"Decrypted data size mismatch, expected {expected_size} bytes, got {len(embeddings_bytes)}")
+            
+            # Unpack embeddings from bytes
+            embeddings = list(struct.unpack('128d', embeddings_bytes))
+            
+            # Validate unpacked embeddings
+            for i, value in enumerate(embeddings):
+                if np.isnan(value) or np.isinf(value):
+                    raise ValueError(f"Invalid embedding value after decryption at index {i}")
+            
+            logger.info("Embeddings decrypted successfully")
+            return embeddings
+            
+        except ValueError as e:
+            logger.error(f"Decryption validation failed: {str(e)}")
+            raise
+        except Exception as e:
+            logger.error(f"Decryption failed: {str(e)}")
+            raise RuntimeError(f"Failed to decrypt embeddings: {str(e)}")
+    
+    def encrypt_embeddings_with_key(self, embeddings: List[float], key_hex: str) -> str:
+        """
+        Encrypt embeddings using a hex-encoded key directly (no password derivation)
+        
+        Args:
+            embeddings: List of 128 float values
+            key_hex: 64-character hex string (256-bit key)
+            
+        Returns:
+            str: Base64-encoded encrypted string
+        """
+        try:
+            # Validate key format
+            if not isinstance(key_hex, str) or len(key_hex) != 64:
+                raise ValueError("Key must be a 64-character hex string")
+            
+            try:
+                key_bytes = bytes.fromhex(key_hex)
+            except ValueError:
+                raise ValueError("Key must be valid hexadecimal")
+            
+            if len(key_bytes) != self.KEY_SIZE:
+                raise ValueError(f"Key must be {self.KEY_SIZE} bytes ({self.KEY_SIZE * 2} hex characters)")
+            
+            # Validate embeddings
+            if not isinstance(embeddings, list) or len(embeddings) != 128:
+                raise ValueError("Embeddings must be a list of 128 float values")
+            
+            # Convert embeddings to bytes
+            embeddings_bytes = struct.pack('128d', *embeddings)
+            
+            # Generate random nonce
+            nonce = secrets.token_bytes(self.NONCE_SIZE)
+            
+            # Encrypt using AES-256-GCM
+            aesgcm = AESGCM(key_bytes)
+            ciphertext = aesgcm.encrypt(nonce, embeddings_bytes, None)
+            
+            # Combine nonce + ciphertext (no salt needed since key is provided directly)
+            encrypted_data = nonce + ciphertext
+            
+            # Encode as base64
+            encrypted_b64 = base64.b64encode(encrypted_data).decode('utf-8')
+            
+            logger.info("Embeddings encrypted with direct key")
+            return encrypted_b64
+            
+        except ValueError as e:
+            logger.error(f"Direct key encryption validation failed: {str(e)}")
+            raise  # Re-raise ValueError as-is
+        except Exception as e:
+            logger.error(f"Direct key encryption failed: {str(e)}")
+            raise RuntimeError(f"Failed to encrypt embeddings with key: {str(e)}")
+    
+    def decrypt_embeddings_with_key(self, encrypted_str: str, key_hex: str) -> List[float]:
+        """
+        Decrypt embeddings using a hex-encoded key directly
+        
+        Args:
+            encrypted_str: Base64-encoded encrypted string
+            key_hex: 64-character hex string (256-bit key)
+            
+        Returns:
+            List[float]: List of 128 float values
+        """
+        try:
+            # Validate key format
+            if not isinstance(key_hex, str) or len(key_hex) != 64:
+                raise ValueError("Key must be a 64-character hex string")
+            
+            try:
+                key_bytes = bytes.fromhex(key_hex)
+            except ValueError:
+                raise ValueError("Key must be valid hexadecimal")
+            
+            # Decode base64
+            encrypted_data = base64.b64decode(encrypted_str.encode('utf-8'))
+            
+            # Extract nonce and ciphertext
+            nonce = encrypted_data[:self.NONCE_SIZE]
+            ciphertext = encrypted_data[self.NONCE_SIZE:]
+            
+            # Decrypt using AES-256-GCM
+            aesgcm = AESGCM(key_bytes)
+            embeddings_bytes = aesgcm.decrypt(nonce, ciphertext, None)
+            
+            # Unpack embeddings
+            embeddings = list(struct.unpack('128d', embeddings_bytes))
+            
+            logger.info("Embeddings decrypted with direct key")
+            return embeddings
+            
+        except Exception as e:
+            logger.error(f"Direct key decryption failed: {str(e)}")
+            raise RuntimeError(f"Failed to decrypt embeddings with key: {str(e)}")
+    
+    def change_password(self, encrypted_str: str, old_password: str, new_password: str) -> str:
+        """
+        Change the password for encrypted embeddings
+        
+        Args:
+            encrypted_str: Currently encrypted embeddings
+            old_password: Current password
+            new_password: New password
+            
+        Returns:
+            str: Re-encrypted embeddings with new password
+        """
+        try:
+            # Decrypt with old password
+            embeddings = self.decrypt_embeddings(encrypted_str, old_password)
+            
+            # Re-encrypt with new password
+            new_encrypted = self.encrypt_embeddings(embeddings, new_password)
+            
+            logger.info("Password changed successfully for encrypted embeddings")
+            return new_encrypted
+            
+        except Exception as e:
+            logger.error(f"Password change failed: {str(e)}")
+            raise RuntimeError(f"Failed to change password: {str(e)}")
+    
+    def verify_password(self, encrypted_str: str, password: str) -> bool:
+        """
+        Verify if a password can decrypt the embeddings
+        
+        Args:
+            encrypted_str: Encrypted embeddings string
+            password: Password to verify
+            
+        Returns:
+            bool: True if password is correct, False otherwise
+        """
+        try:
+            self.decrypt_embeddings(encrypted_str, password)
+            return True
+        except (ValueError, RuntimeError):
+            return False
 
 
 class EncryptionManager:
@@ -358,14 +711,38 @@ def create_encryption_manager(key: Optional[str] = None) -> EncryptionManager:
     return EncryptionManager(key)
 
 
+def create_embedding_encryptor(iterations: int = 100000) -> EmbeddingEncryptor:
+    """
+    Factory function to create embedding encryptor
+    
+    Args:
+        iterations: Number of PBKDF2 iterations
+        
+    Returns:
+        EmbeddingEncryptor: Configured embedding encryptor
+    """
+    return EmbeddingEncryptor(iterations)
+
+
 def generate_encryption_key() -> str:
     """
-    Generate a new encryption key
+    Generate a new encryption key (Fernet compatible)
     
     Returns:
         str: Base64-encoded encryption key
     """
     return Fernet.generate_key().decode()
+
+
+def generate_embedding_key() -> str:
+    """
+    Generate a new encryption key for embeddings (AES-256)
+    
+    Returns:
+        str: 64-character hex string (256-bit key)
+    """
+    encryptor = EmbeddingEncryptor()
+    return encryptor.generate_key()
 
 
 def encrypt_face_encoding(face_encoding: np.ndarray, encryption_key: str) -> str:
@@ -396,3 +773,63 @@ def decrypt_face_encoding(encrypted_encoding: str, encryption_key: str) -> np.nd
     """
     manager = EncryptionManager(encryption_key)
     return manager.decrypt_face_encoding(encrypted_encoding)
+
+
+def encrypt_embeddings(embeddings: List[float], password: str) -> str:
+    """
+    Convenience function to encrypt embeddings with password
+    
+    Args:
+        embeddings: List of 128 float values
+        password: Password for encryption
+        
+    Returns:
+        str: Encrypted embeddings string
+    """
+    encryptor = EmbeddingEncryptor()
+    return encryptor.encrypt_embeddings(embeddings, password)
+
+
+def decrypt_embeddings(encrypted_str: str, password: str) -> List[float]:
+    """
+    Convenience function to decrypt embeddings with password
+    
+    Args:
+        encrypted_str: Encrypted embeddings string
+        password: Password for decryption
+        
+    Returns:
+        List[float]: Decrypted embeddings
+    """
+    encryptor = EmbeddingEncryptor()
+    return encryptor.decrypt_embeddings(encrypted_str, password)
+
+
+def encrypt_embeddings_with_key(embeddings: List[float], key_hex: str) -> str:
+    """
+    Convenience function to encrypt embeddings with direct key
+    
+    Args:
+        embeddings: List of 128 float values
+        key_hex: 64-character hex string
+        
+    Returns:
+        str: Encrypted embeddings string
+    """
+    encryptor = EmbeddingEncryptor()
+    return encryptor.encrypt_embeddings_with_key(embeddings, key_hex)
+
+
+def decrypt_embeddings_with_key(encrypted_str: str, key_hex: str) -> List[float]:
+    """
+    Convenience function to decrypt embeddings with direct key
+    
+    Args:
+        encrypted_str: Encrypted embeddings string
+        key_hex: 64-character hex string
+        
+    Returns:
+        List[float]: Decrypted embeddings
+    """
+    encryptor = EmbeddingEncryptor()
+    return encryptor.decrypt_embeddings_with_key(encrypted_str, key_hex)

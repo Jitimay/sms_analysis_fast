@@ -1,0 +1,16 @@
+[workspace]
+members = [
+    "node",
+    "pallets/proofofface",
+    "runtime",
+]
+resolver = "2"
+
+[workspace.dependencies]
+# Substrate
+substrate-frame = { version = "4.0.0-dev", git = "https://github.com/paritytech/polkadot-sdk.git", branch = "release-polkadot-v1.1.0" }
+substrate-primitives = { version = "4.0.0-dev", git = "https://github.com/paritytech/polkadot-sdk.git", branch = "release-polkadot-v1.1.0" }
+
+# Local dependencies
+pallet-proofofface = { path = "pallets/proofofface", default-features = false }
+proofofface-runtime = { path = "runtime" }

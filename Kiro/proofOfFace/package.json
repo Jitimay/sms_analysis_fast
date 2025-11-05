@@ -1,0 +1,71 @@
+{
+  "name": "proofofface-workspace",
+  "version": "1.0.0",
+  "description": "ProofOfFace - Decentralized Identity Verification System",
+  "private": true,
+  "workspaces": [
+    "frontend"
+  ],
+  "scripts": {
+    "setup": "npm run setup:rust && npm run setup:python && npm run setup:frontend && npm run setup:contracts",
+    "setup:rust": "rustup target add wasm32-unknown-unknown && cargo install --force --locked cargo-contract",
+    "setup:python": "cd ai-service && python3 -m venv venv && source venv/bin/activate && pip install -r requirements.txt",
+    "setup:frontend": "cd frontend && npm install",
+    "setup:contracts": "cd contracts && cargo contract build",
+    "build": "npm run build:substrate && npm run build:contracts && npm run build:frontend",
+    "build:substrate": "cd substrate-node && cargo build --release",
+    "build:contracts": "cd contracts && cargo contract build",
+    "build:frontend": "cd frontend && npm run build",
+    "start": "concurrently \"npm run start:substrate\" \"npm run start:ai\" \"npm run start:frontend\"",
+    "start:substrate": "cd substrate-node && ./target/release/proofofface-node --dev --tmp --ws-external --rpc-external --rpc-cors all",
+    "start:ai": "cd ai-service && source venv/bin/activate && python app.py",
+    "start:frontend": "cd frontend && npm start",
+    "dev": "npm run start",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "docker:build": "docker-compose build",
+    "docker:logs": "docker-compose logs -f",
+    "test": "npm run test:contracts && npm run test:ai && npm run test:frontend",
+    "test:contracts": "cd contracts && cargo test",
+    "test:ai": "cd ai-service && source venv/bin/activate && pytest",
+    "test:frontend": "cd frontend && npm test -- --watchAll=false",
+    "clean": "npm run clean:substrate && npm run clean:contracts && npm run clean:frontend",
+    "clean:substrate": "cd substrate-node && cargo clean",
+    "clean:contracts": "cd contracts && cargo clean",
+    "clean:frontend": "cd frontend && rm -rf build node_modules",
+    "deploy:local": "./scripts/deploy.sh local",
+    "deploy:testnet": "./scripts/deploy.sh testnet",
+    "health": "npm run health:substrate && npm run health:ai && npm run health:frontend",
+    "health:substrate": "curl -s http://localhost:9933/health || echo 'Substrate node not running'",
+    "health:ai": "curl -s http://localhost:5000/health || echo 'AI service not running'",
+    "health:frontend": "curl -s http://localhost:3000 || echo 'Frontend not running'",
+    "format": "cd contracts && cargo fmt && cd ../ai-service && black . && cd ../frontend && npm run format",
+    "lint": "cd contracts && cargo clippy && cd ../ai-service && flake8 . && cd ../frontend && npm run lint"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.1"
+  },
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-org/proofofface.git"
+  },
+  "keywords": [
+    "polkadot",
+    "substrate",
+    "blockchain",
+    "identity",
+    "verification",
+    "face-recognition",
+    "deepfake",
+    "web3",
+    "rust",
+    "react",
+    "python"
+  ],
+  "author": "ProofOfFace Team",
+  "license": "MIT"
+}

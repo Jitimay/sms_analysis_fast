@@ -1,0 +1,160 @@
+version: '3.8'
+
+services:
+  # Substrate Node - Polkadot blockchain backend
+  substrate-node:
+    build:
+      context: ./substrate-node
+      dockerfile: Dockerfile
+    container_name: proofofface-substrate
+    ports:
+      - "9944:9944"  # WebSocket RPC
+      - "9933:9933"  # HTTP RPC  
+      - "30333:30333"  # P2P
+    command: [
+      "--dev",
+      "--tmp", 
+      "--ws-external",
+      "--rpc-external", 
+      "--rpc-cors", "all",
+      "--rpc-methods", "unsafe",
+      "--ws-port", "9944",
+      "--rpc-port", "9933"
+    ]
+    volumes:
+      - substrate_data:/data
+    networks:
+      - proofofface-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9933/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # AI Service - Python face recognition API
+  ai-service:
+    build:
+      context: ./ai-service
+      dockerfile: Dockerfile
+    container_name: proofofface-ai
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_ENV=development
+      - FLASK_DEBUG=1
+      - IPFS_NODE_URL=http://ipfs:5001
+      - POSTGRES_URL=postgresql://postgres:password@postgres:5432/proofofface
+      - FACE_RECOGNITION_TOLERANCE=0.6
+      - PORT=5000
+    depends_on:
+      postgres:
+        condition: service_healthy
+      ipfs:
+        condition: service_started
+    volumes:
+      - ./ai-service:/app
+      - ai_uploads:/app/uploads
+    networks:
+      - proofofface-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Frontend - React application
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: proofofface-frontend
+    ports:
+      - "3000:80"
+    environment:
+      - REACT_APP_SUBSTRATE_WS_URL=ws://localhost:9944
+      - REACT_APP_AI_SERVICE_URL=http://localhost:5000
+      - REACT_APP_IPFS_GATEWAY=http://localhost:8080/ipfs/
+    depends_on:
+      substrate-node:
+        condition: service_healthy
+      ai-service:
+        condition: service_healthy
+    networks:
+      - proofofface-network
+
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: proofofface-postgres
+    environment:
+      - POSTGRES_DB=proofofface
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_INITDB_ARGS=--encoding=UTF-8
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./ai-service/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - proofofface-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # IPFS Node - Decentralized storage
+  ipfs:
+    image: ipfs/go-ipfs:v0.17.0
+    container_name: proofofface-ipfs
+    ports:
+      - "4001:4001"    # P2P swarm
+      - "5001:5001"    # API server
+      - "8080:8080"    # Gateway server
+    volumes:
+      - ipfs_data:/data/ipfs
+      - ipfs_staging:/export
+    networks:
+      - proofofface-network
+    environment:
+      - IPFS_PROFILE=server
+    command: |
+      sh -c "
+        ipfs config --json API.HTTPHeaders.Access-Control-Allow-Origin '[\"*\"]' &&
+        ipfs config --json API.HTTPHeaders.Access-Control-Allow-Methods '[\"PUT\", \"POST\", \"GET\"]' &&
+        ipfs daemon --migrate=true
+      "
+
+  # Redis Cache (optional - for performance)
+  redis:
+    image: redis:7-alpine
+    container_name: proofofface-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - proofofface-network
+    command: redis-server --appendonly yes
+
+volumes:
+  substrate_data:
+    driver: local
+  postgres_data:
+    driver: local
+  ipfs_data:
+    driver: local
+  ipfs_staging:
+    driver: local
+  ai_uploads:
+    driver: local
+  redis_data:
+    driver: local
+
+networks:
+  proofofface-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16

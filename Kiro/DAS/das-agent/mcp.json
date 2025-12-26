@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "das-agricultural": {
+      "command": "node",
+      "args": ["../mcp-server.js"],
+      "env": {}
+    }
+  }
+}

@@ -1,0 +1,65 @@
+NullShot Hacks: Season 0
+Exploring the new frontier of AI and Blockchain
+
+This hackathon is a collaborative initiative between NullShot and Edenlayer, co-sponsored by Thirdweb and created to accelerate AI innovation within the Web3 ecosystem.
+
+Build an Agent or MCP utility that showcases the next evolution of the Agentic Economy.
+
+$30,000 Prize Pool / Multiple Prize Categories / November Submissions
+
+The Agentic Economy is evolving and becoming more realised with every passing day. Anthropic's Model Context Protocol (MCP) has provided the foundation for networks of autonomous AI agents and applications that can discover, collaborate and transact with one another in new ways.
+
+This hackathon brings together developers, researchers and builders to explore the potential of intelligent, decentralized applications and foster a growing community around AI-native development.
+
+We're looking for builders that can merge blockchain composability with AI interoperability, enabling a network of independent agents and AI applications to unlock new forms of utility and value creation.
+
+With a Season 0 prize pool of $30,000, the NullShot Hackathon is looking for teams ready to chart unexplored territory in the agentic web: where intelligence and decentralization converge.
+
+Prizes
+The following Prize Categories are available for submissions, with four winning prizes available in each category. Teams may only submit a single entry to one chosen category.
+
+Track 1: a) MCPs/Agents using the Nullshot Framework b) [NEW] Submit and publish a web app using Nullshot (FOUR prize winners of $5,000 each)
+Track 2: MCPs/Agents using other frameworks (FOUR prize winners of $2,000 each)
+In addition to the two main tracks above, there’s also the Community Choice Award (ONE Prize winner of $2,000) which spans across all categories and will consist of one additional prize winner. Voting for the Community Choice Award will occur on nullshot.ai.
+
+You can find the Nullshot Agent and MCP Framework here:
+
+https://github.com/null-shot/typescript-agent-framework
+
+Thirdweb infrastructure codes available for builders on request.
+
+Eligibility and Criteria
+Participants can submit their entries by choosing one category and following the competition rules listed below.
+
+Entries will be judged according to the criteria listed below, with FOUR winners announced in EACH category (as well as an additional Community Choice Award) that will qualify for a share of the prize pool available.
+
+In order to qualify, entries must meet the following criteria:
+
+Code Repository (e.g., GitHub/GitLab, public or shareable)
+Demo Video (3–5 minutes, demonstrating key features and usage)
+Project Write-Up (covering architecture, goals, and track relevance)
+Project Submission on NullShot via Brainstorm (Track 1a) / Publish a product via Nullshot Platform (Track 1b)
+For both submissions, be sure to tag "Nullshot Hacks S0" when submitting:
+Screenshot 2025-11-17 at 01.30.39.png
+
+README/Installation Guide (with environment/setup instructions)
+The following objectives will be of primary consideration for judging:
+
+To raise awareness of the NullShot Agent and Model Context Protocol (MCP) framework.
+To encourage innovation in decentralized AI agent development and Web3-integrated workflows.
+To engage blockchain ecosystems in building intelligent, autonomous, onchain and/or crosschain applications.
+Contact us
+You can contact us via support@edenlayer.com or visit either of the project discords for more information.
+
+Thirdweb infrastructure codes are available for use by builders competing in this hackathon. Message us for more details!
+
+About us
+Nullshot
+The AI + web3 platform to chat, build, and own collectively.
+https://nullshot.ai/
+Edenlayer
+An open protocol for AI collaboration and discovery, powering a more efficient Agentic Economy.
+https://edenlayer.com/
+Thirdweb
+The place to build and monetize web3 apps with everything in one place.
+https://thirdweb.com/

@@ -7,6 +7,7 @@ export default function RouteComparisonPage() {
     const [routes, setRoutes] = useState([])
     const [selectedRoute, setSelectedRoute] = useState(null)
     const [paymentIntent, setPaymentIntent] = useState(null)
+    const [error, setError] = useState(null)
 
     useEffect(() => {
         const intent = JSON.parse(sessionStorage.getItem('paymentIntent') || '{}')
@@ -16,7 +17,6 @@ export default function RouteComparisonPage() {
         }
         setPaymentIntent(intent)
 
-        // Fetch Real-Time Data from Python Backend
         const fetchRoutes = async () => {
             try {
                 const response = await fetch('http://localhost:8000/optimize-route', {
@@ -30,15 +30,16 @@ export default function RouteComparisonPage() {
                     })
                 })
 
-                if (!response.ok) throw new Error('Failed to fetch routes')
+                if (!response.ok) {
+                    throw new Error(`API Error: ${response.status} ${response.statusText}`)
+                }
 
                 const data = await response.json()
                 setRoutes(data.routes_evaluated)
                 setSelectedRoute(data.routes_evaluated.find(r => r.is_best))
             } catch (err) {
-                console.error('API Error:', err)
-                // FallbackMock for demo stability if backend is offline
-                setRoutes(fallbackRoutes(intent.amount))
+                console.error('Failed to fetch routes:', err)
+                setError(`Failed to load routes: ${err.message}`)
             } finally {
                 setLoading(false)
             }
@@ -47,27 +48,19 @@ export default function RouteComparisonPage() {
         fetchRoutes()
     }, [navigate])
 
-    const fallbackRoutes = (amount) => [
-        {
-            id: 'route_a',
-            name: 'Traditional Bank Wire',
-            provider: 'SWIFT / Western Union',
-            fee: amount * 0.07,
-            time: '2-3 days',
-            reliability: '92%',
-            savings: 0
-        },
-        {
-            id: 'route_c',
-            name: 'RouteX Optimized (MNEE)',
-            provider: 'AI-Selected Path',
-            fee: amount * 0.005,
-            time: '3 seconds',
-            reliability: '98%',
-            is_best: true,
-            savings: (amount * 0.07) - (amount * 0.005)
-        }
-    ]
+    if (error) {
+        return (
+            <div className="dashboard-container">
+                <div className="glass-card" style={{ maxWidth: '600px', borderColor: '#ef4444' }}>
+                    <h2 style={{ color: '#ef4444' }}>Unable to Load Routes</h2>
+                    <p style={{ opacity: 0.8, marginBottom: '2rem' }}>{error}</p>
+                    <button className="primary-btn" onClick={() => navigate('/send')}>
+                        ← Back to Send
+                    </button>
+                </div>
+            </div>
+        )
+    }
 
     const handleProceed = () => {
         if (selectedRoute) {

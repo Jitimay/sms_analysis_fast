@@ -3,11 +3,45 @@
 ## 🎯 Project Overview
 RouterX is an AI agent that autonomously optimizes cross-border payments using MNEE stablecoin. The agent fetches live market data, calculates optimal routes, and executes payments automatically - demonstrating true programmable money for AI agents.
 
+## 🚀 Quick Start
+
+### Prerequisites
+- Node.js 18+ and npm
+- Python 3.8+ and pip
+- MetaMask browser extension
+
+### One-Command Setup
+```bash
+./start.sh
+```
+
+This will:
+- Install all dependencies
+- Start backend API on http://localhost:8000
+- Start frontend on http://localhost:5173
+- Initialize the database
+
+### Manual Setup
+```bash
+# Backend
+cd backend
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+uvicorn main:app --reload
+
+# Frontend (new terminal)
+cd frontend
+npm install
+npm run dev
+```
+
 ## 🤖 AI Agent Functionality
 - **Autonomous Decision Making**: AI agent analyzes live market conditions
 - **Real-Time Data Integration**: CoinGecko API + Celo network gas prices
 - **Intelligent Routing**: Compares traditional banking vs blockchain routes
 - **Automated Execution**: Smart contract payments without human intervention
+- **Transaction Persistence**: Saves all transactions to local database
 
 ## 💰 MNEE Integration
 - Contract: `0x8ccedbAe4916b79da7F3F612EfB2EB93A2bFD6cF`
@@ -15,14 +49,8 @@ RouterX is an AI agent that autonomously optimizes cross-border payments using M
 - Automated MNEE transfers through RouteXRouter
 - Oracle validation for secure execution
 
-## 🚀 Impact
-- **90%+ cost savings** vs traditional remittances
-- **3-second settlement** vs 2-3 days
-- **$700B+ market** addressable
-- **Real-world utility** for cross-border payments
-
 ## 🛠 Tech Stack
-- **Backend**: Python/FastAPI (AI Agent)
+- **Backend**: Python/FastAPI (AI Agent) + SQLite Database
 - **Smart Contracts**: Solidity with Chainlink oracles
 - **Frontend**: React 19 with Web3 integration
 - **Network**: Celo (MNEE native chain)
@@ -32,7 +60,40 @@ RouterX is an AI agent that autonomously optimizes cross-border payments using M
 2. AI agent fetches live market data
 3. Agent calculates optimal route using MNEE pricing
 4. Smart contract executes payment automatically
-5. Real-time savings displayed to user
+5. Transaction saved to database
+6. Real-time savings displayed to user
 
-## 🏆 Hackathon Track: AI & Agent Payments
-Perfect example of AI agents autonomously paying for routing optimization services using programmable MNEE stablecoin.
+## 🏆 Production Features
+- ✅ Real-time market data integration
+- ✅ Database transaction persistence
+- ✅ Error handling and recovery
+- ✅ Environment configuration
+- ✅ Smart contract testing
+- ✅ Comprehensive logging
+
+## 🔧 API Endpoints
+- `POST /optimize-route` - Get optimal payment route
+- `POST /save-transaction` - Save transaction to database
+- `GET /transactions/{address}` - Get user transaction history
+- `GET /docs` - Interactive API documentation
+
+## 🧪 Testing
+```bash
+# Smart Contract Tests
+cd contracts
+forge test
+
+# Backend Tests
+cd backend
+python -m pytest
+
+# Frontend Tests
+cd frontend
+npm test
+```
+
+## 🌟 Impact
+- **90%+ cost savings** vs traditional remittances
+- **3-second settlement** vs 2-3 days
+- **$700B+ market** addressable
+- **Real-world utility** for cross-border payments

@@ -46,35 +46,30 @@ export default function ExecutionPage() {
     const handleExecution = async (selectedRoute) => {
         try {
             setStatus('executing')
-
-            // Step 1: Initiated
             setCurrentStep(0)
-            await new Promise(r => setTimeout(r, 1000)) // Visual grace period
+            await new Promise(r => setTimeout(r, 1000))
 
-            // Step 2: Blockchain Interaction
             setCurrentStep(1)
 
-            // Execute Real Transaction via WalletContext
-            // For demo/hackathon: if on localhost/mock wallet, this might fail or return a mock hash
-            // We'll calculate safe amounts
-            const amount = 100 // Default to 100 if missing from session
-            const recipient = "0x71C7656EC7ab88b098defB751B7401B5f6d8976F" // RouteX Liquidity Gateway
+            // Get payment intent for amount
+            const paymentIntent = JSON.parse(sessionStorage.getItem('paymentIntent') || '{}')
+            const amount = paymentIntent.amount || 100
+            const recipient = "0x71C7656EC7ab88b098defB751B7401B5f6d8976F"
 
-            console.log("Initiating transaction for route:", selectedRoute.id)
+            console.log("Initiating real MNEE transaction:", { amount, recipient, routeId: selectedRoute.id })
+            
             const tx = await executeRoute(amount, recipient, selectedRoute.id)
 
             if (tx && tx.hash) {
                 setTxHash(tx.hash)
+                console.log("Transaction successful:", tx.hash)
             } else {
-                // Fallback for demo if tx object is weird but didn't throw
-                setTxHash('0x' + Math.random().toString(16).substr(2, 40))
+                throw new Error('Transaction returned invalid response')
             }
 
-            // Step 3: Confirmation
             setCurrentStep(2)
             await new Promise(r => setTimeout(r, 2000))
 
-            // Step 4: Finalize
             setCurrentStep(3)
             setStatus('completed')
 
@@ -83,7 +78,7 @@ export default function ExecutionPage() {
             }, 2000)
 
         } catch (err) {
-            console.error("Execution failed:", err)
+            console.error("Transaction execution failed:", err)
             setError(err.message || 'Transaction failed')
             setStatus('failed')
         }

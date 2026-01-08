@@ -1,0 +1,13 @@
+{
+  "name": "routex-contracts",
+  "version": "1.0.0",
+  "description": "RouterX Smart Contracts",
+  "scripts": {
+    "test": "forge test",
+    "build": "forge build",
+    "deploy": "forge script script/Deploy.s.sol --rpc-url $RPC_URL --private-key $PRIVATE_KEY --broadcast"
+  },
+  "devDependencies": {
+    "forge-std": "^1.0.0"
+  }
+}

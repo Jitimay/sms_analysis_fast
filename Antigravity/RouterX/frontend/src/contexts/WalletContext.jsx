@@ -18,7 +18,7 @@ export const WalletProvider = ({ children }) => {
     const [balance, setBalance] = useState('0')
     const [connecting, setConnecting] = useState(false)
 
-    const MNEE_ADDRESS = '0x8ccedbAe4916b79da7F3F612EfB2EB93A2bFD6cF'
+    const MNEE_ADDRESS = '0x765DE816845861e75A25fCA122bb6898B8B1282a' // Real cUSD on Celo
 
     const connectWallet = async () => {
         if (typeof window.ethereum === 'undefined') {
@@ -85,24 +85,44 @@ export const WalletProvider = ({ children }) => {
             throw new Error('Wallet not connected')
         }
 
-        // Standard ERC20 ABI for transfer
         const erc20ABI = [
             'function transfer(address to, uint256 amount) returns (bool)',
+            'function balanceOf(address owner) view returns (uint256)',
             'function decimals() view returns (uint8)'
         ]
 
-        // Use the MNEE Token Contract directly
         const contract = new ethers.Contract(MNEE_ADDRESS, erc20ABI, signer)
 
         try {
-            // Get decimals (usually 18, but safer to check or assume 18 for hackathon speed)
-            // For now, assume 18 to save a network call, or use parseUnits if we want to be safe
-            // const decimals = await contract.decimals() 
+            // Check cUSD balance first
+            const balance = await contract.balanceOf(account)
             const amountWei = ethers.utils.parseUnits(amount.toString(), 18)
+            
+            if (balance.lt(amountWei)) {
+                throw new Error(`Insufficient cUSD balance. Need ${amount} cUSD, have ${ethers.utils.formatEther(balance)}`)
+            }
 
-            // Execute Direct Transfer
-            // This ensures MetaMask shows "Transfer <Amount> MNEE" instead of "0 ETH"
+            // Execute transfer
             const tx = await contract.transfer(recipient, amountWei)
+            
+            // Save transaction to backend
+            const saveResponse = await fetch('http://localhost:8000/save-transaction', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    user_address: account,
+                    amount: amount,
+                    route_id: routeId,
+                    route_name: 'RouteX Optimized (MNEE)',
+                    fee: amount * 0.005,
+                    savings: amount * 0.065,
+                    destination: 'Cross-border Payment'
+                })
+            })
+
+            if (!saveResponse.ok) {
+                console.warn('Failed to save transaction to database')
+            }
 
             return tx
         } catch (error) {

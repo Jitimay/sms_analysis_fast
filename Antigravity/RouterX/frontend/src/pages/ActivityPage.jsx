@@ -1,44 +1,84 @@
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { useWallet } from '../contexts/WalletContext'
 
 export default function ActivityPage() {
-    // Mock transaction history
-    const transactions = [
-        {
-            id: '1',
-            amount: 500,
-            destination: 'KE-MPESA',
-            route: 'RouteX Optimized (MNEE)',
-            fee: 2.51,
-            savings: 32.49,
-            status: 'completed',
-            date: '2026-01-06 17:15',
-            txHash: '0x8ccedbAe...2bFD6cF'
-        },
-        {
-            id: '2',
-            amount: 250,
-            destination: 'NG-BANK',
-            route: 'RouteX Optimized (MNEE)',
-            fee: 1.26,
-            savings: 16.24,
-            status: 'completed',
-            date: '2026-01-05 14:30',
-            txHash: '0x7bbcdaAd...1aED5bE'
-        },
-        {
-            id: '3',
-            amount: 1000,
-            destination: 'BR-PIX',
-            route: 'RouteX Optimized (MNEE)',
-            fee: 5.01,
-            savings: 64.99,
-            status: 'completed',
-            date: '2026-01-04 09:45',
-            txHash: '0x6aabcb9c...0bcC4aD'
-        }
-    ]
+    const { account } = useWallet()
+    const [transactions, setTransactions] = useState([])
+    const [loading, setLoading] = useState(true)
+    const [error, setError] = useState(null)
 
-    const totalSavings = transactions.reduce((sum, tx) => sum + tx.savings, 0)
+    useEffect(() => {
+        if (account) {
+            fetchTransactions()
+        } else {
+            setLoading(false)
+            setError('Please connect your wallet to view transaction history')
+        }
+    }, [account])
+
+    const fetchTransactions = async () => {
+        try {
+            const response = await fetch(`http://localhost:8000/transactions/${account}`)
+            if (!response.ok) {
+                throw new Error(`Failed to fetch transactions: ${response.status}`)
+            }
+            const data = await response.json()
+            setTransactions(data.transactions || [])
+        } catch (err) {
+            console.error('Failed to fetch transactions:', err)
+            setError(`Unable to load transaction history: ${err.message}`)
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    const totalSavings = transactions.reduce((sum, tx) => sum + (tx.savings || 0), 0)
+
+    if (loading) {
+        return (
+            <div className="dashboard-container">
+                <div className="glass-card">
+                    <div className="loader"></div>
+                    <h3>Loading transactions...</h3>
+                </div>
+            </div>
+        )
+    }
+
+    if (error) {
+        return (
+            <div className="dashboard-container">
+                <div className="glass-card" style={{ maxWidth: '600px', borderColor: '#ef4444' }}>
+                    <h2 style={{ color: '#ef4444' }}>Transaction History Unavailable</h2>
+                    <p style={{ opacity: 0.8, marginBottom: '2rem' }}>{error}</p>
+                    <Link to="/send">
+                        <button className="primary-btn">Send New Payment</button>
+                    </Link>
+                </div>
+            </div>
+        )
+    }
+
+    if (transactions.length === 0) {
+        return (
+            <div className="dashboard-container">
+                <header>
+                    <h1>Route<span style={{ color: '#6366f1' }}>X</span></h1>
+                    <p style={{ marginTop: '-0.5rem', opacity: 0.7 }}>Transaction History</p>
+                </header>
+                <div className="glass-card" style={{ maxWidth: '600px' }}>
+                    <h2>No Transactions Yet</h2>
+                    <p style={{ opacity: 0.8, marginBottom: '2rem' }}>
+                        Start using RouteX to see your transaction history and savings.
+                    </p>
+                    <Link to="/send">
+                        <button className="primary-btn">Send Your First Payment</button>
+                    </Link>
+                </div>
+            </div>
+        )
+    }
 
     return (
         <div className="dashboard-container">

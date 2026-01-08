@@ -85,28 +85,24 @@ export const WalletProvider = ({ children }) => {
             throw new Error('Wallet not connected')
         }
 
-        // RouteX Router Contract ABI
-        const routerABI = [
-            'function executeRoute(uint256 amount, address recipient, string calldata routeId, uint256 simulatedSavings) external'
+        // Standard ERC20 ABI for transfer
+        const erc20ABI = [
+            'function transfer(address to, uint256 amount) returns (bool)',
+            'function decimals() view returns (uint8)'
         ]
 
-        // For demo purposes, we'll use a mock contract address
-        // In production, this would be the deployed RouteXRouter
-        const ROUTER_ADDRESS = '0x0000000000000000000000000000000000000001' // Mock
-
-        const contract = new ethers.Contract(ROUTER_ADDRESS, routerABI, signer)
+        // Use the MNEE Token Contract directly
+        const contract = new ethers.Contract(MNEE_ADDRESS, erc20ABI, signer)
 
         try {
-            // Convert amount to Wei (assuming MNEE has 18 decimals like standard ERC20)
-            const amountWei = ethers.utils.parseEther(amount.toString())
-            const savingsWei = ethers.utils.parseEther('6.49') // Mock savings
+            // Get decimals (usually 18, but safer to check or assume 18 for hackathon speed)
+            // For now, assume 18 to save a network call, or use parseUnits if we want to be safe
+            // const decimals = await contract.decimals() 
+            const amountWei = ethers.utils.parseUnits(amount.toString(), 18)
 
-            const tx = await contract.executeRoute(
-                amountWei,
-                recipient,
-                routeId,
-                savingsWei
-            )
+            // Execute Direct Transfer
+            // This ensures MetaMask shows "Transfer <Amount> MNEE" instead of "0 ETH"
+            const tx = await contract.transfer(recipient, amountWei)
 
             return tx
         } catch (error) {

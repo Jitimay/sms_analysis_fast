@@ -26,8 +26,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Initialize Web3 for Celo
-w3 = Web3(Web3.HTTPProvider(Config.CELO_RPC_URL))
+# Initialize Web3 for Ethereum (MNEE is on Ethereum)
+ETHEREUM_RPC_URL = "https://eth-mainnet.g.alchemy.com/v2/demo"  # Use your own RPC
+w3 = Web3(Web3.HTTPProvider(ETHEREUM_RPC_URL))
 
 class RouteRequest(BaseModel):
     amount: float
@@ -68,25 +69,29 @@ class TransactionRequest(BaseModel):
     is_best: bool = False
 
 def get_live_mnee_price():
-    """Fetch live cUSD price (using as MNEE proxy)"""
+    """Fetch live MNEE price from CoinGecko"""
     try:
-        url = f"{Config.COINGECKO_API_URL}/simple/price?ids=celo-dollar&vs_currencies=usd"
+        # Try to get MNEE price, fallback to USD stablecoin price
+        url = f"{Config.COINGECKO_API_URL}/simple/price?ids=mnee&vs_currencies=usd"
         response = requests.get(url, timeout=Config.API_TIMEOUT)
-        response.raise_for_status()
-        data = response.json()
-        price = data.get('celo-dollar', {}).get('usd', None)
-        if price is None:
-            # Fallback to 1.0 for stablecoin if API doesn't have it
-            price = 1.0
-        logger.info(f"Fetched cUSD price: ${price}")
-        return price
-    except Exception as e:
-        logger.error(f"Failed to fetch cUSD price: {e}")
-        # For stablecoins, we can safely assume ~$1.00
+        
+        if response.status_code == 200:
+            data = response.json()
+            price = data.get('mnee', {}).get('usd', None)
+            if price:
+                logger.info(f"Fetched MNEE price: ${price}")
+                return price
+        
+        # Fallback: MNEE is USD-backed stablecoin, should be ~$1.00
+        logger.info("Using MNEE stablecoin price: $1.00")
         return 1.0
+        
+    except Exception as e:
+        logger.error(f"Failed to fetch MNEE price: {e}")
+        return 1.0  # USD-backed stablecoin fallback
 
 def get_live_gas_price():
-    """Fetch live gas price from Celo network"""
+    """Fetch live gas price from Ethereum network"""
     try:
         wei_price = w3.eth.gas_price
         if wei_price is None:
@@ -94,8 +99,8 @@ def get_live_gas_price():
         gwei_price = w3.from_wei(wei_price, 'gwei')
         return float(gwei_price)
     except Exception as e:
-        logger.error(f"Failed to fetch gas price: {e}")
-        raise HTTPException(status_code=503, detail="Unable to fetch live gas price")
+        logger.error(f"Failed to fetch Ethereum gas price: {e}")
+        return 20.0  # Reasonable Ethereum gas price fallback
 
 @app.post("/optimize-route")
 def optimize_route(req: RouteRequest):
@@ -140,7 +145,7 @@ def optimize_route(req: RouteRequest):
             Route(
                 id="ROUTEX_OPTIMIZED",
                 name="RouteX AI (MNEE)",
-                provider="Celo Network",
+                provider="Ethereum Network",
                 fee=routex_fee,
                 delivery_time="3 Seconds",
                 reliability="99%",

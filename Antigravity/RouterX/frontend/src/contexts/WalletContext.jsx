@@ -18,7 +18,7 @@ export const WalletProvider = ({ children }) => {
     const [balance, setBalance] = useState('0')
     const [connecting, setConnecting] = useState(false)
 
-    const MNEE_ADDRESS = '0x765DE816845861e75A25fCA122bb6898B8B1282a' // Real cUSD on Celo
+    const MNEE_ADDRESS = '0x8ccedbAe4916b79da7F3F612EfB2EB93A2bFD6cF' // Real MNEE on Ethereum
 
     const connectWallet = async () => {
         if (typeof window.ethereum === 'undefined') {
@@ -94,12 +94,12 @@ export const WalletProvider = ({ children }) => {
         const contract = new ethers.Contract(MNEE_ADDRESS, erc20ABI, signer)
 
         try {
-            // Check cUSD balance first
+            // Check MNEE balance first
             const balance = await contract.balanceOf(account)
             const amountWei = ethers.utils.parseUnits(amount.toString(), 18)
             
             if (balance.lt(amountWei)) {
-                throw new Error(`Insufficient cUSD balance. Need ${amount} cUSD, have ${ethers.utils.formatEther(balance)}`)
+                throw new Error(`Insufficient MNEE balance. Need ${amount} MNEE, have ${ethers.utils.formatEther(balance)}`)
             }
 
             // Execute transfer

@@ -1,7 +1,21 @@
-# RouterX - AI-Powered Stablecoin Remittance Router
+# RouterX - AI-Powered Programmable Money for Autonomous Agents
 
-## 🎯 Project Overview
-RouterX is an AI agent that autonomously optimizes cross-border payments using MNEE stablecoin. The agent fetches live market data, calculates optimal routes, and executes payments automatically - demonstrating true programmable money for AI agents.
+## 🎯 MNEE Hackathon Project
+**Track: AI & Agent Payments**
+
+RouterX demonstrates the future of programmable money where AI agents autonomously optimize and execute cross-border payments using MNEE stablecoin. This is true autonomous economic coordination - agents making financial decisions without human intervention.
+
+## 🤖 Autonomous AI Agent Features
+- **Self-Directed Market Analysis**: AI fetches live MNEE prices and Ethereum gas costs
+- **Autonomous Route Selection**: Agent compares traditional banking vs blockchain routes
+- **Automated Execution**: Smart contracts execute MNEE payments without human approval
+- **Economic Coordination**: Demonstrates how agents can coordinate financial activities
+
+## 💰 MNEE Integration
+- **Contract**: `0x8ccedbAe4916b79da7F3F612EfB2EB93A2bFD6cF` (Real MNEE on Ethereum)
+- **Programmable Money**: MNEE enables autonomous agent transactions
+- **Live Price Feeds**: Real-time MNEE pricing for cost calculations
+- **Smart Contract Automation**: Oracle-validated MNEE transfers
 
 ## 🚀 Quick Start
 

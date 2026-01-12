@@ -27,7 +27,7 @@ app.add_middleware(
 )
 
 # Initialize Web3 for Ethereum (MNEE is on Ethereum)
-ETHEREUM_RPC_URL = "https://eth-mainnet.g.alchemy.com/v2/demo"  # Use your own RPC
+ETHEREUM_RPC_URL = "https://ethereum.publicnode.com"
 w3 = Web3(Web3.HTTPProvider(ETHEREUM_RPC_URL))
 
 class RouteRequest(BaseModel):
@@ -54,19 +54,6 @@ class TransactionRequest(BaseModel):
     fee: float
     savings: float
     destination: str
-    route_id: str
-    route_name: str
-    fee: float
-    savings: float
-    destination: str
-    id: str
-    name: str
-    provider: str
-    fee: float
-    delivery_time: str
-    reliability: str
-    savings: float
-    is_best: bool = False
 
 def get_live_mnee_price():
     """Fetch live MNEE price from CoinGecko"""
@@ -113,14 +100,14 @@ def optimize_route(req: RouteRequest):
         if mnee_price is None:
             raise HTTPException(status_code=503, detail="MNEE price unavailable")
             
-        celo_gas_gwei = get_live_gas_price()
+        eth_gas_gwei = get_live_gas_price()
         
         # 2. Calculate Real Costs
         traditional_fee = req.amount * 0.07  # 7% traditional banking
         remitly_fee = req.amount * 0.045     # 4.5% remittance services
         
         # RouteX fee calculation with real gas costs
-        estimated_gas_cost_usd = (150000 * celo_gas_gwei * 1e-9) * mnee_price
+        estimated_gas_cost_usd = (150000 * eth_gas_gwei * 1e-9) * mnee_price
         routex_fee = (req.amount * 0.003) + estimated_gas_cost_usd + 0.01  # Protocol fee
         
         routes = [
@@ -170,12 +157,12 @@ def optimize_route(req: RouteRequest):
             "analysis_timestamp": time.time(),
             "market_data": {
                 "mnee_price_usd": mnee_price,
-                "celo_gas_gwei": celo_gas_gwei
+                "celo_gas_gwei": eth_gas_gwei
             },
             "routes_evaluated": [route.dict() for route in routes],
             "recommended_route": selected_route.dict(),
             "ai_reasoning": (
-                f"LIVE ANALYSIS: Celo Gas {celo_gas_gwei:.1f} Gwei, MNEE ${mnee_price:.3f}. "
+                f"LIVE ANALYSIS: Ethereum Gas {eth_gas_gwei:.1f} Gwei, MNEE ${mnee_price:.3f}. "
                 f"RouteX saves ${(traditional_fee - routex_fee):.2f} "
                 f"({((traditional_fee - routex_fee)/traditional_fee)*100:.1f}%) vs traditional banking."
             )

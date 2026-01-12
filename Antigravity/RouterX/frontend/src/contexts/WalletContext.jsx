@@ -18,7 +18,7 @@ export const WalletProvider = ({ children }) => {
     const [balance, setBalance] = useState('0')
     const [connecting, setConnecting] = useState(false)
 
-    const MNEE_ADDRESS = '0x8ccedbAe4916b79da7F3F612EfB2EB93A2bFD6cF' // Real MNEE on Ethereum
+    const DAI_ADDRESS = '0x6B175474E89094C44Da98b954EedeAC495271d0F' // Real DAI on Ethereum
 
     const connectWallet = async () => {
         if (typeof window.ethereum === 'undefined') {
@@ -80,57 +80,77 @@ export const WalletProvider = ({ children }) => {
         }
     }, [])
 
-    const executeRoute = async (amount, recipient, routeId) => {
-        if (!signer) {
-            throw new Error('Wallet not connected')
-        }
-
-        const erc20ABI = [
-            'function transfer(address to, uint256 amount) returns (bool)',
-            'function balanceOf(address owner) view returns (uint256)',
-            'function decimals() view returns (uint8)'
-        ]
-
-        const contract = new ethers.Contract(MNEE_ADDRESS, erc20ABI, signer)
-
-        try {
-            // Check MNEE balance first
-            const balance = await contract.balanceOf(account)
-            const amountWei = ethers.utils.parseUnits(amount.toString(), 18)
-            
-            if (balance.lt(amountWei)) {
-                throw new Error(`Insufficient MNEE balance. Need ${amount} MNEE, have ${ethers.utils.formatEther(balance)}`)
+        const executeRoute = async (amount, recipient, routeId) => {
+            if (!signer) {
+                throw new Error('Wallet not connected');
             }
-
-            // Execute transfer
-            const tx = await contract.transfer(recipient, amountWei)
-            
-            // Save transaction to backend
-            const saveResponse = await fetch('http://localhost:8000/save-transaction', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    user_address: account,
-                    amount: amount,
-                    route_id: routeId,
-                    route_name: 'RouteX Optimized (MNEE)',
-                    fee: amount * 0.005,
-                    savings: amount * 0.065,
-                    destination: 'Cross-border Payment'
-                })
-            })
-
-            if (!saveResponse.ok) {
-                console.warn('Failed to save transaction to database')
+    
+            // IMPORTANT: This address has been updated by the agent.
+            const ROUTEX_ROUTER_ADDRESS = '0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0';
+    
+            const mneeABI = [
+                'function approve(address spender, uint256 amount) returns (bool)',
+                'function allowance(address owner, address spender) view returns (uint256)',
+                'function balanceOf(address owner) view returns (uint256)',
+            ];
+    
+            const routeXRouterABI = [
+                'function executeRoute(uint256 amount, address recipient, string calldata routeId, uint256 simulatedSavings)'
+            ];
+    
+            const daiContract = new ethers.Contract(DAI_ADDRESS, mneeABI, signer);
+            const routeXRouterContract = new ethers.Contract(ROUTEX_ROUTER_ADDRESS, routeXRouterABI, signer);
+    
+            const amountWei = ethers.utils.parseUnits(amount.toString(), 18);
+    
+            try {
+                // Check MNEE balance first
+                const balance = await daiContract.balanceOf(account);
+                if (balance.lt(amountWei)) {
+                    throw new Error(`Insufficient MNEE balance. Need ${amount} MNEE, have ${ethers.utils.formatEther(balance)}`);
+                }
+    
+                // Check allowance and approve if necessary
+                const currentAllowance = await mneeContract.allowance(account, ROUTEX_ROUTER_ADDRESS);
+                if (currentAllowance.lt(amountWei)) {
+                    console.log('Allowance is insufficient, requesting approval...');
+                    const approvalTx = await mneeContract.approve(ROUTEX_ROUTER_ADDRESS, amountWei);
+                    await approvalTx.wait(); // Wait for the approval transaction to be mined
+                    console.log('Approval successful!');
+                } else {
+                    console.log('Sufficient allowance already granted.');
+                }
+    
+                // Execute the route on the router contract
+                console.log('Executing route via RouteXRouter contract...');
+                const simulatedSavings = ethers.utils.parseUnits((amount * 0.065).toString(), 18); // Example savings
+                const executeTx = await routeXRouterContract.executeRoute(amountWei, recipient, routeId, simulatedSavings);
+    
+                // Save transaction to backend
+                const saveResponse = await fetch('http://localhost:8000/save-transaction', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        user_address: account,
+                        amount: amount,
+                        route_id: routeId,
+                        route_name: 'RouteX Optimized (MNEE)',
+                        fee: amount * 0.005,
+                        savings: amount * 0.065,
+                        destination: 'Cross-border Payment'
+                    })
+                });
+    
+                if (!saveResponse.ok) {
+                    console.warn('Failed to save transaction to database');
+                }
+    
+                return executeTx;
+            } catch (error) {
+                console.error('Transaction failed:', error);
+                throw error;
             }
-
-            return tx
-        } catch (error) {
-            console.error('Transaction failed:', error)
-            throw error
         }
-    }
-
     return (
         <WalletContext.Provider value={{
             account,
@@ -141,7 +161,7 @@ export const WalletProvider = ({ children }) => {
             connectWallet,
             disconnectWallet,
             executeRoute,
-            MNEE_ADDRESS
+            USDC_ADDRESS
         }}>
             {children}
         </WalletContext.Provider>

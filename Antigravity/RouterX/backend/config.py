@@ -4,8 +4,9 @@ from dotenv import load_dotenv
 load_dotenv()
 
 class Config:
-    CELO_RPC_URL = os.getenv('CELO_RPC_URL', 'https://forno.celo.org')
-    MNEE_CONTRACT = os.getenv('MNEE_CONTRACT', '0x8ccedbAe4916b79da7F3F612EfB2EB93A2bFD6cF')
+    # Use Ethereum mainnet with real USDC
+    ETHEREUM_RPC_URL = os.getenv('ETHEREUM_RPC_URL', 'https://ethereum.publicnode.com')
+    USDC_CONTRACT = os.getenv('USDC_CONTRACT', '0xA0b86a33E6441b8435b662f0E2d0B8A0E4B2B8B0')  # Real USDC
     COINGECKO_API_URL = os.getenv('COINGECKO_API_URL', 'https://api.coingecko.com/api/v3')
     DATABASE_PATH = os.getenv('DATABASE_PATH', 'routex.db')
     LOG_LEVEL = os.getenv('LOG_LEVEL', 'INFO')

@@ -1,5 +1,6 @@
 fastapi
 uvicorn
+pydantic
 requests
 web3
 python-dotenv
